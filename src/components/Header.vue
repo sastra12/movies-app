@@ -14,12 +14,12 @@ const changeMenu = () => {
 </script>
 
 <template>
-  <div>
-    <header class="bg-primary py-3.5 px-6 sm:flex sm:justify-between">
+  <div class="bg-primary sm:flex md:justify-center">
+    <header class="py-3.5 px-6 md:flex md:justify-between md:w-4/5">
       <h1 class="text-3xl font-poppins text-secondary font-bold">The Movie App</h1>
 
       <!-- Hamburger Menu -->
-      <span class="absolute sm:hidden top-3 right-6 text-4xl cursor-pointer" @click="changeMenu">
+      <span class="absolute md:hidden top-3 right-6 text-4xl cursor-pointer" @click="changeMenu">
         <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512" v-if="openMenu">
           <!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
           <path
@@ -38,11 +38,11 @@ const changeMenu = () => {
 
       <!-- Navigation Menu -->
       <ul
-        class="absolute top-16 duration-700 ease-in px-6 bg-primary w-full sm:w-auto sm:static sm:flex sm:items-center"
-        :class="[openMenu ? 'left-0' : 'left-[-100%]']"
+        class="absolute top-16 duration-700 ease-in px-1 bg-primary w-full md:w-auto md:static md:flex md:items-center"
+        :class="[openMenu ? '-left-14' : 'left-[-100%]']"
       >
         <li
-          class="text-xl text-white my-6 hover:text-secondary sm:mx-4 sm:my-0"
+          class="text-xl text-white px-20 my-6 hover:text-secondary md:mx-4 md:my-0 md:px-0"
           v-for="nav in links"
           :key="nav"
         >
