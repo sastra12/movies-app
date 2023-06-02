@@ -40,11 +40,12 @@ export default {
   },
   setup() {
     const nowPlaying = ref([])
+    const api_key = import.meta.env.VITE_APP_API_KEY
 
     const getNowPlaying = async () => {
       try {
         const response = await axios.get(
-          'https://api.themoviedb.org/3/movie/now_playing?api_key=24c3da9cbad7b70ea81d42919f3ee7b3'
+          `https://api.themoviedb.org/3/movie/now_playing?api_key=${api_key}`
         )
         nowPlaying.value = response.data.results.splice(0, 10)
       } catch (error) {
