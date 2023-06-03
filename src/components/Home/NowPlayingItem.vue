@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <img :src="poster_path" alt="" class="rounded-md h-52 w-[296px] bg-cover" />
+      <img :src="poster_path" alt="" class="rounded-md h-52 w-full bg-cover" />
       <h1 class="mt-3 font-poppins text-lg font-semibold text-secondary">{{ props.item.title }}</h1>
       <span class="mt-2 font-poppins text-base font-light">{{ props.item.release_date }}</span>
     </div>
