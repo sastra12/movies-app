@@ -1,0 +1,25 @@
+import { defineStore } from 'pinia'
+
+import axios from 'axios'
+
+export const useMoviesStore = defineStore('movies', {
+  state: () => ({
+    movieGenres: []
+  }),
+
+  getters: {
+    getMovieGenres(state) {
+      return state.movieGenres
+    }
+  },
+
+  actions: {
+    async getmovieGenres() {
+      const api_key = import.meta.env.VITE_APP_API_KEY
+      const response = await axios.get(
+        `https://api.themoviedb.org/3/genre/movie/list?api_key=${api_key}`
+      )
+      this.movieGenres = response.data.genres
+    }
+  }
+})

@@ -33,7 +33,7 @@
         </span>
         <!-- Navigation Menu -->
         <ul
-          class="absolute duration-700 ease-in bg-white w-full left-0 sm:static sm:flex sm:w-auto sm:bg-primary sm:duration-0"
+          class="absolute duration-700 ease-in bg-white w-full z-50 left-0 sm:static sm:flex sm:w-auto sm:bg-primary sm:duration-0"
           :class="[openMenu ? 'top-[52px]' : '-top-40']"
         >
           <li
