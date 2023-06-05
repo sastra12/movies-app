@@ -1,14 +1,18 @@
 <template>
   <section class="mt-6 sm:mt-10">
     <div class="px-6 sm:px-0 sm:w-4/5 sm:mx-auto">
-      <h1 class="text-lg font-bold text-secondary2 font-poppins">Now Playing</h1>
+      <h1 class="text-lg sm:text-xl font-bold text-secondary2 font-poppins">Now Playing</h1>
       <Swiper
         class="p-4 mt-2"
         :modules="modules"
         :slidesPerView="1"
         :freeMode="true"
         :pagination="{
-          clickable: true
+          type: 'progressbar'
+        }"
+        :autoplay="{
+          delay: 5000,
+          disableOnInteraction: false
         }"
         :breakpoints="{
           '@0.00': {
@@ -29,7 +33,7 @@
           }
         }"
       >
-        <Swiper-Slide v-for="item in nowPlaying" :key="item" class="pb-12 sm:pb-16">
+        <Swiper-Slide v-for="item in nowPlaying" :key="item" class="pt-2 sm:pt-3">
           <NowPlayingItem :item="item" />
         </Swiper-Slide>
       </Swiper>
