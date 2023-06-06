@@ -16,40 +16,101 @@
           {{ item.name }}
         </button>
       </div>
-      <div></div>
+      <Swiper
+        class="p-4 mt-2 sm:mt-8"
+        :modules="modules"
+        :slidesPerView="1"
+        :freeMode="true"
+        :pagination="{
+          type: 'progressbar'
+        }"
+        :breakpoints="{
+          '@0.00': {
+            slidesPerView: 2,
+            spaceBetween: 10
+          },
+          '@0.75': {
+            slidesPerView: 3,
+            spaceBetween: 10
+          },
+          '@1.00': {
+            slidesPerView: 5,
+            spaceBetween: 10
+          },
+          '@1.50': {
+            slidesPerView: 6,
+            spaceBetween: 10
+          }
+        }"
+      >
+        <Swiper-Slide v-for="item in movieByCategory" :key="item" class="pt-2 sm:pt-3">
+          <category-item :item="item" />
+        </Swiper-Slide>
+      </Swiper>
     </div>
   </section>
 </template>
 
-<script setup>
+<script>
 import axios from 'axios'
 import { useMoviesStore } from '@/stores/movies.js'
 import { onMounted, reactive, ref } from 'vue'
+import { Swiper, SwiperSlide } from 'swiper/vue'
+// import required modules
+import { Pagination, FreeMode, Autoplay } from 'swiper'
+import CategoryItem from '@/components/Home/CategoryItem.vue'
 
-const api_key = import.meta.env.VITE_APP_API_KEY
-const defaultCategory = reactive({
-  class: 'bg-secondary text-white',
-  id: null
-})
-const movieByCategory = ref([])
+// Import Swiper styles
+import 'swiper/css'
 
-const movieStore = useMoviesStore()
+import 'swiper/css/pagination'
 
-const getMovieByCategory = async (id) => {
-  defaultCategory.id = id == null ? 28 : id
-  try {
-    const response = await axios.get(
-      `https://api.themoviedb.org/3/discover/movie?api_key=${api_key}&with_genres=${defaultCategory.id}&page=1`
-    )
-    console.log(response)
-  } catch (error) {
-    console.log(error)
+export default {
+  components: {
+    Swiper,
+    SwiperSlide,
+    CategoryItem
+  },
+  setup() {
+    const api_key = import.meta.env.VITE_APP_API_KEY
+    const defaultCategory = reactive({
+      class: 'bg-secondary text-white',
+      id: null
+    })
+    const movieByCategory = ref([])
+
+    const movieStore = useMoviesStore()
+
+    const getMovieByCategory = async (id) => {
+      defaultCategory.id = id == null ? 28 : id
+      try {
+        const response = await axios.get(
+          `https://api.themoviedb.org/3/discover/movie?api_key=${api_key}&with_genres=${defaultCategory.id}&page=1`
+        )
+        movieByCategory.value = response.data.results
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    const poster_path = (path) => {
+      return 'https://image.tmdb.org/t/p/w500/' + path
+    }
+
+    onMounted(() => {
+      getMovieByCategory()
+    })
+
+    return {
+      poster_path,
+      modules: [Pagination, FreeMode, Autoplay],
+      movieStore,
+      movieByCategory,
+      defaultCategory,
+      getMovieByCategory
+    }
   }
 }
-
-onMounted(() => {
-  getMovieByCategory()
-})
 </script>
 
 <style></style>
