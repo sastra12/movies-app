@@ -34,14 +34,7 @@ const props = defineProps({
 })
 
 const genreTypeName = (genreId) => {
-  return movieStore.movieGenres
-    .filter(function (genre) {
-      return genreId.includes(genre.id)
-    })
-    .map(function (genre) {
-      return genre.name
-    })
-    .join(', ')
+  return movieStore.genreTypeName(genreId)
 }
 
 const poster_path = computed(() => {

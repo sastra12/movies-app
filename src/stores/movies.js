@@ -20,6 +20,16 @@ export const useMoviesStore = defineStore('movies', {
         `https://api.themoviedb.org/3/genre/movie/list?api_key=${api_key}`
       )
       this.movieGenres = response.data.genres
+    },
+    genreTypeName(genreId) {
+      return this.movieGenres
+        .filter(function (genre) {
+          return genreId.includes(genre.id)
+        })
+        .map(function (genre) {
+          return genre.name
+        })
+        .join(', ')
     }
   }
 })
