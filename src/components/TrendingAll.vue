@@ -47,8 +47,8 @@
           }
         }"
       >
-        <Swiper-Slide v-for="item in trendingMovies" :key="item.id" class="pt-2 sm:pt-3">
-          <TrendingMovieItem :item="item" />
+        <Swiper-Slide v-for="item in trendingAll" :key="item.id" class="pt-2 sm:pt-3">
+          <TrendingAllItem :item="item" />
         </Swiper-Slide>
       </Swiper>
     </div>
@@ -67,17 +67,17 @@ import 'swiper/css'
 import 'swiper/css/pagination'
 import { onMounted, reactive, ref, watch } from 'vue'
 
-import TrendingMovieItem from './Home/TrendingMovieItem.vue'
+import TrendingAllItem from './Home/TrendingAllItem.vue'
 
 export default {
   components: {
     Swiper,
     SwiperSlide,
-    TrendingMovieItem
+    TrendingAllItem
   },
   setup() {
     const api_key = import.meta.env.VITE_APP_API_KEY
-    const trendingMovies = ref([])
+    const trendingAll = ref([])
     const defaultTime = ref('day')
     const defaultTrending = reactive({
       class: 'bg-secondary text-white',
@@ -100,9 +100,9 @@ export default {
     const getTrendingMovies = async () => {
       try {
         const response = await axios.get(
-          `https://api.themoviedb.org/3/trending/movie/${defaultTime.value}?api_key=${api_key}`
+          `https://api.themoviedb.org/3/trending/all/${defaultTime.value}?api_key=${api_key}`
         )
-        trendingMovies.value = response.data.results
+        trendingAll.value = response.data.results
       } catch (error) {
         console.log(error)
       }
@@ -121,7 +121,7 @@ export default {
       defaultTrending,
       week,
       today,
-      trendingMovies
+      trendingAll
     }
   }
 }
