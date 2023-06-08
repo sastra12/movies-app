@@ -7,12 +7,6 @@ export const useMoviesStore = defineStore('movies', {
     movieGenres: []
   }),
 
-  getters: {
-    getMovieGenres(state) {
-      return state.movieGenres
-    }
-  },
-
   actions: {
     async getmovieGenres() {
       const api_key = import.meta.env.VITE_APP_API_KEY
