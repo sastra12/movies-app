@@ -1,13 +1,26 @@
 <template>
   <div>
     <div class="cursor-pointer">
-      <img :src="poster_path" alt="" class="rounded-md h-64 w-44 sm:w-full bg-cover" />
-      <h1 class="mt-3 font-poppins text-base font-semibold text-secondary">
+      <img :src="poster_path" alt="" class="rounded-md h-64 w-44 sm:h-full sm:w-full bg-cover" />
+      <h1
+        v-if="props.item.hasOwnProperty('title')"
+        class="mt-3 font-poppins text-base font-semibold text-secondary"
+      >
         {{ props.item.title }}
+      </h1>
+      <h1 v-else class="mt-3 font-poppins text-base font-semibold text-secondary">
+        {{ props.item.original_name }}
       </h1>
       <span>{{ genreTypeName(props.item.genre_ids) }}</span>
       <div class="flex items-center justify-between">
-        <span class="font-poppins text-sm font-light mt-1">{{ props.item.release_date }}</span>
+        <span
+          v-if="props.item.hasOwnProperty('release_date')"
+          class="font-poppins text-sm font-light mt-1"
+          >{{ props.item.release_date }}</span
+        >
+        <span v-else class="font-poppins text-sm font-light mt-1">{{
+          props.item.first_air_date
+        }}</span>
         <div class="flex items-center gap-x-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
