@@ -69,7 +69,6 @@ export default {
         const response = await axios.get(
           `https://api.themoviedb.org/3/discover/${defaultType.value}?api_key=${api_key}&sort_by=popularity.desc&watch_region=US&page=1&with_watch_monetization_types=free`
         )
-        console.log(response)
         freeToWatch.value = response.data.results
       } catch (error) {
         console.log(error)

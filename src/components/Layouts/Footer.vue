@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="mt-12">
     <footer class="w-full bg-primary">
       <div class="py-6 max-w-max mx-auto">
         <h1 class="text-center text-white text-base">&copy; 2023 Sastra Rianto</h1>
