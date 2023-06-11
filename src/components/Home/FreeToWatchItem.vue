@@ -21,7 +21,7 @@
         <span v-else class="font-poppins text-sm font-light mt-1">{{
           props.item.first_air_date
         }}</span>
-        <div class="flex items-center gap-x-2">
+        <div class="flex items-center gap-x-0.5 sm:gap-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="text-sm"

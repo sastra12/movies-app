@@ -6,7 +6,7 @@
       <span>{{ genreTypeName(props.item.genre_ids) }}</span>
       <div class="flex items-center justify-between">
         <span class="font-poppins text-base font-light">{{ props.item.release_date }}</span>
-        <div class="flex items-center gap-x-2">
+        <div class="flex items-center gap-x-0.5 sm:gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512">
             <!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
             <path
