@@ -54,7 +54,7 @@ import { ref } from 'vue'
 
 const openMenu = ref(false)
 const links = ref([
-  { link: '#', name: 'Movies' },
+  { link: '/movies', name: 'Movies' },
   { link: '#', name: 'Tv Show' },
   { link: '#', name: 'People' }
 ])

@@ -2,7 +2,7 @@
   <section class="mt-6 sm:mt-10">
     <div class="px-6 sm:px-0 sm:w-4/5 sm:mx-auto">
       <div class="flex gap-x-4">
-        <h1 class="text-lg sm:text-xl font-bold text-secondary2 font-poppins">Trending Alls</h1>
+        <h1 class="text-lg sm:text-xl font-bold text-secondary2 font-poppins">Trending</h1>
         <div>
           <button
             class="px-3 min-w-max py-1 text-xs rounded-full bg-gray-100 mr-2"

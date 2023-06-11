@@ -20,6 +20,7 @@ export const useMoviesStore = defineStore('movies', {
         .filter(function (genre) {
           return genreId.includes(genre.id)
         })
+        .slice(0, 2)
         .map(function (genre) {
           return genre.name
         })

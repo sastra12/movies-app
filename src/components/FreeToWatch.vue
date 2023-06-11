@@ -22,64 +22,24 @@
       </div>
 
       <!-- Free To Watch -->
-      <div class="p-2 mt-2 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-4">
+      <div
+        class="p-2 mt-2 grid grid-cols-2 min-[455px]:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4"
+      >
         <div class="pt-2 sm:pt-3" v-for="item in freeToWatch" :key="item.id">
           <FreeToWatchItem :item="item" />
         </div>
       </div>
-      <!-- <Swiper
-        class="p-4 mt-2 sm:mt-8"
-        :modules="modules"
-        :slidesPerView="1"
-        :freeMode="true"
-        :pagination="{
-          type: 'progressbar'
-        }"
-        :breakpoints="{
-          '@0.00': {
-            slidesPerView: 2,
-            spaceBetween: 10
-          },
-          '@0.75': {
-            slidesPerView: 3,
-            spaceBetween: 10
-          },
-          '@1.00': {
-            slidesPerView: 5,
-            spaceBetween: 10
-          },
-          '@1.50': {
-            slidesPerView: 6,
-            spaceBetween: 10
-          }
-        }"
-      >
-        <Swiper-Slide v-for="item in freeToWatch" :key="item.id" class="pt-2 sm:pt-3">
-          <FreeToWatchItem :item="item" />
-        </Swiper-Slide>
-      </Swiper> -->
     </div>
   </section>
 </template>
 
 <script>
 import axios from 'axios'
-import { Swiper, SwiperSlide } from 'swiper/vue'
-// import required modules
-import { Pagination, FreeMode, Autoplay } from 'swiper'
-
-// Import Swiper styles
-import 'swiper/css'
-
-import 'swiper/css/pagination'
-import { onMounted, reactive, ref, watch } from 'vue'
-
+import { ref, reactive, onMounted, watch } from 'vue'
 import FreeToWatchItem from './Home/FreeToWatchItem.vue'
 
 export default {
   components: {
-    Swiper,
-    SwiperSlide,
     FreeToWatchItem
   },
   setup() {
@@ -125,7 +85,6 @@ export default {
     })
 
     return {
-      modules: [Pagination, FreeMode, Autoplay],
       defaultFreeToWatch,
       movies,
       tv,
