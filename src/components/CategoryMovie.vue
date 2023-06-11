@@ -1,54 +1,52 @@
 <template>
-  <section class="mt-6 sm:mt-10">
-    <div class="px-6 sm:px-0 sm:w-4/5 sm:mx-auto">
-      <h1 class="text-lg sm:text-xl font-bold text-secondary2 font-poppins">
-        Browse Movie By Category
-      </h1>
-      <div class="flex gap-3 overflow-y-auto pt-2 pb-4">
-        <button
-          v-for="item in movieStore.movieGenres"
-          :key="item.id"
-          class="px-4 min-w-max py-2 text-xs rounded-full bg-gray-100"
-          :class="[item.id == defaultCategory.id ? defaultCategory.class : '']"
-          type="button"
-          @click="getMovieByCategory(item.id)"
-        >
-          {{ item.name }}
-        </button>
-      </div>
-      <Swiper
-        class="p-4 mt-2 sm:mt-8"
-        :modules="modules"
-        :slidesPerView="1"
-        :freeMode="true"
-        :pagination="{
-          type: 'progressbar'
-        }"
-        :breakpoints="{
-          '@0.00': {
-            slidesPerView: 2,
-            spaceBetween: 10
-          },
-          '@0.75': {
-            slidesPerView: 3,
-            spaceBetween: 10
-          },
-          '@1.00': {
-            slidesPerView: 5,
-            spaceBetween: 10
-          },
-          '@1.50': {
-            slidesPerView: 6,
-            spaceBetween: 10
-          }
-        }"
+  <default-container>
+    <h1 class="text-lg sm:text-xl font-bold text-secondary2 font-poppins">
+      Browse Movie By Category
+    </h1>
+    <div class="flex gap-3 overflow-y-auto pt-2 pb-4">
+      <button
+        v-for="item in movieStore.movieGenres"
+        :key="item.id"
+        class="px-4 min-w-max py-2 text-xs rounded-full bg-gray-100"
+        :class="[item.id == defaultCategory.id ? defaultCategory.class : '']"
+        type="button"
+        @click="getMovieByCategory(item.id)"
       >
-        <Swiper-Slide v-for="item in movieByCategory" :key="item" class="pt-2 sm:pt-3">
-          <category-item :item="item" />
-        </Swiper-Slide>
-      </Swiper>
+        {{ item.name }}
+      </button>
     </div>
-  </section>
+    <Swiper
+      class="p-4 mt-2 sm:mt-8"
+      :modules="modules"
+      :slidesPerView="1"
+      :freeMode="true"
+      :pagination="{
+        type: 'progressbar'
+      }"
+      :breakpoints="{
+        '@0.00': {
+          slidesPerView: 2,
+          spaceBetween: 10
+        },
+        '@0.75': {
+          slidesPerView: 3,
+          spaceBetween: 10
+        },
+        '@1.00': {
+          slidesPerView: 5,
+          spaceBetween: 10
+        },
+        '@1.50': {
+          slidesPerView: 6,
+          spaceBetween: 10
+        }
+      }"
+    >
+      <Swiper-Slide v-for="item in movieByCategory" :key="item" class="pt-2 sm:pt-3">
+        <category-item :item="item" />
+      </Swiper-Slide>
+    </Swiper>
+  </default-container>
 </template>
 
 <script>
@@ -59,6 +57,7 @@ import { Swiper, SwiperSlide } from 'swiper/vue'
 // import required modules
 import { Pagination, FreeMode, Autoplay } from 'swiper'
 import CategoryItem from '@/components/Home/CategoryItem.vue'
+import DefaultContainer from '@/components/Layouts/DefaultContainer.vue'
 
 // Import Swiper styles
 import 'swiper/css'
@@ -69,7 +68,8 @@ export default {
   components: {
     Swiper,
     SwiperSlide,
-    CategoryItem
+    CategoryItem,
+    DefaultContainer
   },
   setup() {
     const api_key = import.meta.env.VITE_APP_API_KEY

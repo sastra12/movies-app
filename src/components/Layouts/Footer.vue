@@ -42,8 +42,8 @@
           </a>
         </div>
         <span class="text-white"
-          >Built with <a href="https://vuejs.org/">Vue.js</a> &
-          <a href="https://tailwindcss.com/">TailwindCSS</a>
+          >Built with <a class="text-secondary" href="https://vuejs.org/">Vue.js</a> &
+          <a href="https://tailwindcss.com/" class="text-secondary2">TailwindCSS</a>
         </span>
       </div>
     </footer>

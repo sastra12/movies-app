@@ -1,58 +1,56 @@
 <template>
-  <section class="mt-6 sm:mt-10">
-    <div class="px-6 sm:px-0 sm:w-4/5 sm:mx-auto">
-      <div class="flex gap-x-4">
-        <h1 class="text-lg sm:text-xl font-bold text-secondary2 font-poppins">Trending</h1>
-        <div>
-          <button
-            class="px-3 min-w-max py-1 text-xs rounded-full bg-gray-100 mr-2"
-            :class="[defaultTrending.today ? defaultTrending.class : '']"
-            @click="today()"
-          >
-            Today
-          </button>
-          <button
-            class="px-3 min-w-max py-1 text-xs rounded-full bg-gray-100"
-            :class="[defaultTrending.week ? defaultTrending.class : '']"
-            @click="week()"
-          >
-            This Week
-          </button>
-        </div>
+  <default-container>
+    <div class="flex gap-x-4">
+      <h1 class="text-lg sm:text-xl font-bold text-secondary2 font-poppins">Trending</h1>
+      <div>
+        <button
+          class="px-3 min-w-max py-1 text-xs rounded-full bg-gray-100 mr-2"
+          :class="[defaultTrending.today ? defaultTrending.class : '']"
+          @click="today()"
+        >
+          Today
+        </button>
+        <button
+          class="px-3 min-w-max py-1 text-xs rounded-full bg-gray-100"
+          :class="[defaultTrending.week ? defaultTrending.class : '']"
+          @click="week()"
+        >
+          This Week
+        </button>
       </div>
-      <Swiper
-        class="p-4 mt-2 sm:mt-8"
-        :modules="modules"
-        :slidesPerView="1"
-        :freeMode="true"
-        :pagination="{
-          type: 'progressbar'
-        }"
-        :breakpoints="{
-          '@0.00': {
-            slidesPerView: 2,
-            spaceBetween: 10
-          },
-          '@0.75': {
-            slidesPerView: 3,
-            spaceBetween: 10
-          },
-          '@1.00': {
-            slidesPerView: 5,
-            spaceBetween: 10
-          },
-          '@1.50': {
-            slidesPerView: 6,
-            spaceBetween: 10
-          }
-        }"
-      >
-        <Swiper-Slide v-for="item in trendingAll" :key="item.id" class="pt-2 sm:pt-3">
-          <TrendingAllItem :item="item" />
-        </Swiper-Slide>
-      </Swiper>
     </div>
-  </section>
+    <Swiper
+      class="p-4 mt-2 sm:mt-8"
+      :modules="modules"
+      :slidesPerView="1"
+      :freeMode="true"
+      :pagination="{
+        type: 'progressbar'
+      }"
+      :breakpoints="{
+        '@0.00': {
+          slidesPerView: 2,
+          spaceBetween: 10
+        },
+        '@0.75': {
+          slidesPerView: 3,
+          spaceBetween: 10
+        },
+        '@1.00': {
+          slidesPerView: 5,
+          spaceBetween: 10
+        },
+        '@1.50': {
+          slidesPerView: 6,
+          spaceBetween: 10
+        }
+      }"
+    >
+      <Swiper-Slide v-for="item in trendingAll" :key="item.id" class="pt-2 sm:pt-3">
+        <TrendingAllItem :item="item" />
+      </Swiper-Slide>
+    </Swiper>
+  </default-container>
 </template>
 
 <script>
@@ -68,12 +66,14 @@ import 'swiper/css/pagination'
 import { onMounted, reactive, ref, watch } from 'vue'
 
 import TrendingAllItem from './Home/TrendingAllItem.vue'
+import DefaultContainer from './Layouts/DefaultContainer.vue'
 
 export default {
   components: {
     Swiper,
     SwiperSlide,
-    TrendingAllItem
+    TrendingAllItem,
+    DefaultContainer
   },
   setup() {
     const api_key = import.meta.env.VITE_APP_API_KEY

@@ -1,46 +1,46 @@
 <template>
-  <section class="mt-6 sm:mt-10">
-    <div class="px-6 sm:px-0 sm:w-4/5 sm:mx-auto">
-      <div class="flex gap-x-4">
-        <h1 class="text-lg sm:text-xl font-bold text-secondary2 font-poppins">Free To Watch</h1>
-        <div>
-          <button
-            class="px-3 min-w-max py-1 text-xs rounded-full bg-gray-100 mr-2"
-            :class="[defaultFreeToWatch.today ? defaultFreeToWatch.class : '']"
-            @click="movies()"
-          >
-            Movies
-          </button>
-          <button
-            class="px-3 min-w-max py-1 text-xs rounded-full bg-gray-100"
-            :class="[defaultFreeToWatch.week ? defaultFreeToWatch.class : '']"
-            @click="tv()"
-          >
-            TV
-          </button>
-        </div>
-      </div>
-
-      <!-- Free To Watch -->
-      <div
-        class="p-2 mt-2 grid grid-cols-2 min-[455px]:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4"
-      >
-        <div class="pt-2 sm:pt-3" v-for="item in freeToWatch" :key="item.id">
-          <FreeToWatchItem :item="item" />
-        </div>
+  <default-container>
+    <div class="flex gap-x-4">
+      <h1 class="text-lg sm:text-xl font-bold text-secondary2 font-poppins">Free To Watch</h1>
+      <div>
+        <button
+          class="px-3 min-w-max py-1 text-xs rounded-full bg-gray-100 mr-2"
+          :class="[defaultFreeToWatch.today ? defaultFreeToWatch.class : '']"
+          @click="movies()"
+        >
+          Movies
+        </button>
+        <button
+          class="px-3 min-w-max py-1 text-xs rounded-full bg-gray-100"
+          :class="[defaultFreeToWatch.week ? defaultFreeToWatch.class : '']"
+          @click="tv()"
+        >
+          TV
+        </button>
       </div>
     </div>
-  </section>
+
+    <!-- Free To Watch -->
+    <div
+      class="p-2 mt-2 grid grid-cols-2 min-[455px]:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4"
+    >
+      <div class="pt-2 sm:pt-3" v-for="item in freeToWatch" :key="item.id">
+        <FreeToWatchItem :item="item" />
+      </div>
+    </div>
+  </default-container>
 </template>
 
 <script>
 import axios from 'axios'
 import { ref, reactive, onMounted, watch } from 'vue'
 import FreeToWatchItem from './Home/FreeToWatchItem.vue'
+import DefaultContainer from '@/components/Layouts/DefaultContainer.vue'
 
 export default {
   components: {
-    FreeToWatchItem
+    FreeToWatchItem,
+    DefaultContainer
   },
   setup() {
     const api_key = import.meta.env.VITE_APP_API_KEY

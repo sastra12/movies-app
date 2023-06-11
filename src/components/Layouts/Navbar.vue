@@ -2,9 +2,11 @@
   <section>
     <nav class="w-full bg-primary">
       <div class="py-3 px-6 sm:px-0 sm:w-4/5 sm:mx-auto sm:flex sm:items-center sm:justify-between">
-        <h1 class="text-secondary text-xl sm:text-2xl font-bold">
-          Movie<span class="text-secondary2">App</span>
-        </h1>
+        <router-link to="/">
+          <h1 class="text-secondary text-xl sm:text-2xl font-bold">
+            Movie<span class="text-secondary2">App</span>
+          </h1>
+        </router-link>
 
         <!-- Hamburger Menu -->
         <span
