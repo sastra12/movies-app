@@ -61,7 +61,13 @@ const genreTypeName = (genreId) => {
   return movieStore.genreTypeName(genreId)
 }
 
+console.log(props.item)
+
 const poster_path = computed(() => {
-  return 'https://image.tmdb.org/t/p/w500/' + props.item.poster_path
+  if (props.item.poster_path) {
+    return 'https://image.tmdb.org/t/p/w500/' + props.item.poster_path
+  } else if (props.item.poster_path == null) {
+    return 'https://via.placeholder.com/300x450'
+  }
 })
 </script>
