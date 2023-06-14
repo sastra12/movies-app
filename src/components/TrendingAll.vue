@@ -101,7 +101,7 @@ export default {
 
     const getTrendingMovies = async () => {
       try {
-        const response = await axiosInstance.get(`trending/all/${defaultTime.value}?`)
+        const response = await axiosInstance.get(`trending/all/${defaultTime.value}`)
         trendingAll.value = response.data.results
       } catch (error) {
         console.log(error)

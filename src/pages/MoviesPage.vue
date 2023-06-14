@@ -32,7 +32,7 @@
                 :key="item.id"
                 @click="selectGenres(item.id)"
               >
-                {{ item.name }}
+                {{ item.name }} || {{ convertWithGenresToString }}
               </div>
             </div>
           </div>
@@ -76,16 +76,22 @@ onMounted(async () => {
 
 const getDataMovies = async () => {
   try {
-    const response = await axiosInstance.get(`discover/movie?&sort_by=${sort_by.value}`)
+    const response = await axiosInstance.get(
+      `discover/movie?&sort_by=${sort_by.value}&with_genres=${convertWithGenresToString.value}`
+    )
     movies.value = response.data.results
   } catch (error) {
     console.log(error)
   }
 }
 
-watch(sort_by, () => {
-  getDataMovies()
-})
+watch(
+  [sort_by, with_genres],
+  () => {
+    getDataMovies()
+  },
+  { deep: true }
+)
 
 const addSortBy = (item) => {
   active.item = item.title
@@ -96,6 +102,10 @@ const activeGenres = computed(() => {
   return with_genres.value.map(function (item) {
     return item
   })
+})
+
+const convertWithGenresToString = computed(() => {
+  return with_genres.value.map(String).join(',')
 })
 
 const selectGenres = (genreId) => {
