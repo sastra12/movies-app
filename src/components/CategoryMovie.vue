@@ -4,16 +4,13 @@
       Browse Movie By Category
     </h1>
     <div class="flex gap-1 overflow-y-auto pt-2 pb-4">
-      <button
+      <Button
         v-for="item in movieStore.movieGenres"
         :key="item.id"
-        class="px-3 min-w-max py-1 text-xs rounded-full bg-gray-100 mr-2"
-        :class="[item.id == defaultCategory.id ? defaultCategory.class : '']"
-        type="button"
-        @click="getMovieByCategory(item.id)"
-      >
-        {{ item.name }}
-      </button>
+        :text="item.name"
+        :type="item.id == defaultCategory.id ? 'primary' : 'secondary'"
+        @event="getMovieByCategory(item.id)"
+      />
     </div>
     <Swiper
       class="p-4 mt-2 sm:mt-8"
@@ -58,6 +55,7 @@ import { Pagination, FreeMode, Autoplay } from 'swiper'
 import CategoryItem from '@/components/Home/CategoryItem.vue'
 import DefaultContainer from '@/components/Layouts/DefaultContainer.vue'
 import { inject } from 'vue'
+import Button from '@/components/Reusable/Button.vue'
 
 // Import Swiper styles
 import 'swiper/css'
@@ -68,13 +66,13 @@ export default {
   components: {
     Swiper,
     SwiperSlide,
+    Button,
     CategoryItem,
     DefaultContainer
   },
   setup() {
     const axiosInstance = inject('$axios')
     const defaultCategory = reactive({
-      class: 'bg-secondary text-white',
       id: null
     })
     const movieByCategory = ref([])
