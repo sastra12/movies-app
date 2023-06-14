@@ -67,6 +67,7 @@ import { onMounted, reactive, ref, watch } from 'vue'
 
 import TrendingAllItem from './Home/TrendingAllItem.vue'
 import DefaultContainer from './Layouts/DefaultContainer.vue'
+import { inject } from 'vue'
 
 export default {
   components: {
@@ -76,6 +77,7 @@ export default {
     DefaultContainer
   },
   setup() {
+    const axiosInstance = inject('$axios')
     const api_key = import.meta.env.VITE_APP_API_KEY
     const trendingAll = ref([])
     const defaultTime = ref('day')
@@ -99,9 +101,7 @@ export default {
 
     const getTrendingMovies = async () => {
       try {
-        const response = await axios.get(
-          `https://api.themoviedb.org/3/trending/all/${defaultTime.value}?api_key=${api_key}`
-        )
+        const response = await axiosInstance.get(`trending/all/${defaultTime.value}?`)
         trendingAll.value = response.data.results
       } catch (error) {
         console.log(error)

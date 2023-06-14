@@ -50,7 +50,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import { useMoviesStore } from '@/stores/movies.js'
 import { onMounted, reactive, ref } from 'vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
@@ -58,6 +57,7 @@ import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Pagination, FreeMode, Autoplay } from 'swiper'
 import CategoryItem from '@/components/Home/CategoryItem.vue'
 import DefaultContainer from '@/components/Layouts/DefaultContainer.vue'
+import { inject } from 'vue'
 
 // Import Swiper styles
 import 'swiper/css'
@@ -72,6 +72,7 @@ export default {
     DefaultContainer
   },
   setup() {
+    const axiosInstance = inject('$axios')
     const api_key = import.meta.env.VITE_APP_API_KEY
     const defaultCategory = reactive({
       class: 'bg-secondary text-white',
@@ -84,8 +85,8 @@ export default {
     const getMovieByCategory = async (id) => {
       defaultCategory.id = id == null ? 28 : id
       try {
-        const response = await axios.get(
-          `https://api.themoviedb.org/3/discover/movie?api_key=${api_key}&with_genres=${defaultCategory.id}&page=1`
+        const response = await axiosInstance.get(
+          `discover/movie?with_genres=${defaultCategory.id}&page=1`
         )
         movieByCategory.value = response.data.results
       } catch (error) {

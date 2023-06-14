@@ -61,8 +61,6 @@ const genreTypeName = (genreId) => {
   return movieStore.genreTypeName(genreId)
 }
 
-console.log(props.item)
-
 const poster_path = computed(() => {
   if (props.item.poster_path) {
     return 'https://image.tmdb.org/t/p/w500/' + props.item.poster_path

@@ -40,7 +40,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 // import required modules
 import { Pagination, FreeMode, Autoplay } from 'swiper'
@@ -55,6 +54,7 @@ import NowPlayingItem from './Home/NowPlayingItem.vue'
 import DefaultContainer from './Layouts/DefaultContainer.vue'
 
 import { useMoviesStore } from '../stores/movies'
+import { inject } from 'vue'
 
 export default {
   components: {
@@ -64,16 +64,14 @@ export default {
     DefaultContainer
   },
   setup() {
+    const axiosInstance = inject('$axios')
     const nowPlaying = ref([])
-    const api_key = import.meta.env.VITE_APP_API_KEY
 
     const movieStore = useMoviesStore()
 
     const getNowPlaying = async () => {
       try {
-        const response = await axios.get(
-          `https://api.themoviedb.org/3/movie/now_playing?api_key=${api_key}`
-        )
+        const response = await axiosInstance.get(`movie/now_playing`)
         nowPlaying.value = response.data.results.splice(0, 12)
       } catch (error) {
         console.log(error)

@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
-
-import axios from 'axios'
+import { inject } from 'vue'
 
 export const useMoviesStore = defineStore('movies', {
   state: () => ({
@@ -44,10 +43,8 @@ export const useMoviesStore = defineStore('movies', {
 
   actions: {
     async getmovieGenres() {
-      const api_key = import.meta.env.VITE_APP_API_KEY
-      const response = await axios.get(
-        `https://api.themoviedb.org/3/genre/movie/list?api_key=${api_key}`
-      )
+      const axiosInstance = inject('$axios')
+      const response = await axiosInstance.get(`genre/movie/list`)
       this.movieGenres = response.data.genres
     },
     genreTypeName(genreId) {

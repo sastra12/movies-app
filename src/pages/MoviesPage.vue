@@ -11,9 +11,7 @@
             <span class="text-sm sm:text-base font-semibold">Sort Results By</span>
             <div
               class="py-2 text-sm sm:text-base hover:bg-secondary hover:text-white px-2 cursor-pointer rounded-sm my-2"
-              :class="[
-                activeSort.item == item.title || item.value == sort_by ? activeSort.class : ''
-              ]"
+              :class="[active.item == item.title || item.value == sort_by ? active.class : '']"
               v-for="item in movieStore.sort_by"
               :key="item"
               @click="addSortBy(item)"
@@ -28,9 +26,11 @@
             <span class="text-sm sm:text-base font-semibold">Select By Genre</span>
             <div class="mt-2 max-h-32 sm:max-h-56 overflow-y-auto">
               <div
-                class="py-1 text-sm sm:text-base hover:bg-secondary hover:text-white px-2 cursor-pointer rounded-sm"
+                class="py-1 mb-2 text-sm sm:text-base px-2 cursor-pointer rounded-sm hover:bg-secondary hover:text-white"
+                :class="[activeGenres.includes(item.id) ? 'bg-secondary text-white' : '']"
                 v-for="item in movieStore.movieGenres"
                 :key="item.id"
+                @click="selectGenres(item.id)"
               >
                 {{ item.name }}
               </div>
@@ -55,17 +55,18 @@ import DefaultContainer from '../components/Layouts/DefaultContainer.vue'
 import Accordion from '@/components/Reusable/Accordion.vue'
 import NowPlayingMovies from '@/components/Movies/NowPlayingMovies.vue'
 import { useMoviesStore } from '../stores/movies'
+import { inject } from 'vue'
 
-import { ref, onMounted, reactive, watch } from 'vue'
-import axios from 'axios'
-
-const api_key = import.meta.env.VITE_APP_API_KEY
+import { ref, onMounted, reactive, watch, computed } from 'vue'
 const movieStore = useMoviesStore()
+const axiosInstance = inject('$axios')
 const movies = ref([])
 const sort_by = ref('popularity.desc')
-const activeSort = reactive({
+const with_genres = ref([])
+const active = reactive({
   class: 'bg-secondary text-white',
-  item: ''
+  item: '',
+  id: ''
 })
 
 onMounted(async () => {
@@ -75,9 +76,7 @@ onMounted(async () => {
 
 const getDataMovies = async () => {
   try {
-    const response = await axios.get(
-      `https://api.themoviedb.org/3/discover/movie?api_key=${api_key}&sort_by=${sort_by.value}`
-    )
+    const response = await axiosInstance.get(`discover/movie?&sort_by=${sort_by.value}`)
     movies.value = response.data.results
   } catch (error) {
     console.log(error)
@@ -89,7 +88,23 @@ watch(sort_by, () => {
 })
 
 const addSortBy = (item) => {
-  activeSort.item = item.title
+  active.item = item.title
   sort_by.value = item.value
+}
+
+const activeGenres = computed(() => {
+  return with_genres.value.map(function (item) {
+    return item
+  })
+})
+
+const selectGenres = (genreId) => {
+  if (with_genres.value.includes(genreId)) {
+    // Remove the genre from the selected genres if it is already selected
+    with_genres.value = with_genres.value.filter((genre) => genre !== genreId)
+  } else {
+    // Add the genre to the selected genres if it is not already selected
+    with_genres.value.push(genreId)
+  }
 }
 </script>

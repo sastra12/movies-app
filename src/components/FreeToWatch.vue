@@ -32,10 +32,10 @@
 </template>
 
 <script>
-import axios from 'axios'
 import { ref, reactive, onMounted, watch } from 'vue'
 import FreeToWatchItem from './Home/FreeToWatchItem.vue'
 import DefaultContainer from '@/components/Layouts/DefaultContainer.vue'
+import { inject } from 'vue'
 
 export default {
   components: {
@@ -43,7 +43,8 @@ export default {
     DefaultContainer
   },
   setup() {
-    const api_key = import.meta.env.VITE_APP_API_KEY
+    const axiosInstance = inject('$axios')
+
     const freeToWatch = ref([])
     const defaultType = ref('movie')
     const defaultFreeToWatch = reactive({
@@ -66,8 +67,8 @@ export default {
 
     const getFreeToWatch = async () => {
       try {
-        const response = await axios.get(
-          `https://api.themoviedb.org/3/discover/${defaultType.value}?api_key=${api_key}&sort_by=popularity.desc&watch_region=US&page=1&with_watch_monetization_types=free`
+        const response = await axiosInstance.get(
+          `discover/${defaultType.value}?sort_by=popularity.desc&watch_region=US&page=1&with_watch_monetization_types=free`
         )
         freeToWatch.value = response.data.results
       } catch (error) {
