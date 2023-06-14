@@ -2,21 +2,17 @@
   <default-container>
     <div class="flex gap-x-4">
       <h1 class="text-lg sm:text-xl font-bold text-secondary2 font-poppins">Trending</h1>
-      <div>
-        <button
-          class="px-3 min-w-max py-1 text-xs rounded-full bg-gray-100 mr-2"
-          :class="[defaultTrending.today ? defaultTrending.class : '']"
-          @click="today()"
-        >
-          Today
-        </button>
-        <button
-          class="px-3 min-w-max py-1 text-xs rounded-full bg-gray-100"
-          :class="[defaultTrending.week ? defaultTrending.class : '']"
-          @click="week()"
-        >
-          This Week
-        </button>
+      <div class="flex gap-x-2">
+        <Button
+          text="Today"
+          :type="defaultTime == 'day' ? 'primary' : 'secondary'"
+          @event="switchDefaultTime()"
+        />
+        <Button
+          text="This Week"
+          :type="defaultTime == 'week' ? 'primary' : 'secondary'"
+          @event="switchDefaultTime()"
+        />
       </div>
     </div>
     <Swiper
@@ -54,7 +50,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 // import required modules
 import { Pagination, FreeMode, Autoplay } from 'swiper'
@@ -63,40 +58,32 @@ import { Pagination, FreeMode, Autoplay } from 'swiper'
 import 'swiper/css'
 
 import 'swiper/css/pagination'
-import { onMounted, reactive, ref, watch } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
 
 import TrendingAllItem from './Home/TrendingAllItem.vue'
 import DefaultContainer from './Layouts/DefaultContainer.vue'
 import { inject } from 'vue'
+import Button from '@/components/Reusable/Button.vue'
 
 export default {
   components: {
     Swiper,
     SwiperSlide,
     TrendingAllItem,
-    DefaultContainer
+    DefaultContainer,
+    Button
   },
   setup() {
     const axiosInstance = inject('$axios')
-    const api_key = import.meta.env.VITE_APP_API_KEY
     const trendingAll = ref([])
     const defaultTime = ref('day')
-    const defaultTrending = reactive({
-      class: 'bg-secondary text-white',
-      today: true,
-      week: false
-    })
 
-    const today = () => {
-      defaultTime.value = 'day'
-      defaultTrending.today = true
-      defaultTrending.week = false
-    }
-
-    const week = () => {
-      defaultTime.value = 'week'
-      defaultTrending.week = true
-      defaultTrending.today = false
+    const switchDefaultTime = () => {
+      if (defaultTime.value == 'day') {
+        defaultTime.value = 'week'
+      } else if (defaultTime.value == 'week') {
+        defaultTime.value = 'day'
+      }
     }
 
     const getTrendingMovies = async () => {
@@ -118,10 +105,9 @@ export default {
 
     return {
       modules: [Pagination, FreeMode, Autoplay],
-      defaultTrending,
-      week,
-      today,
-      trendingAll
+      defaultTime,
+      trendingAll,
+      switchDefaultTime
     }
   }
 }

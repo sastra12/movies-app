@@ -3,11 +3,11 @@
     <h1 class="text-lg sm:text-xl font-bold text-secondary2 font-poppins">
       Browse Movie By Category
     </h1>
-    <div class="flex gap-3 overflow-y-auto pt-2 pb-4">
+    <div class="flex gap-1 overflow-y-auto pt-2 pb-4">
       <button
         v-for="item in movieStore.movieGenres"
         :key="item.id"
-        class="px-4 min-w-max py-2 text-xs rounded-full bg-gray-100"
+        class="px-3 min-w-max py-1 text-xs rounded-full bg-gray-100 mr-2"
         :class="[item.id == defaultCategory.id ? defaultCategory.class : '']"
         type="button"
         @click="getMovieByCategory(item.id)"
@@ -73,7 +73,6 @@ export default {
   },
   setup() {
     const axiosInstance = inject('$axios')
-    const api_key = import.meta.env.VITE_APP_API_KEY
     const defaultCategory = reactive({
       class: 'bg-secondary text-white',
       id: null

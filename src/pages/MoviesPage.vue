@@ -32,7 +32,7 @@
                 :key="item.id"
                 @click="selectGenres(item.id)"
               >
-                {{ item.name }} || {{ convertWithGenresToString }}
+                {{ item.name }}
               </div>
             </div>
           </div>
