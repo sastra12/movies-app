@@ -2,21 +2,17 @@
   <default-container>
     <div class="flex gap-x-4">
       <h1 class="text-lg sm:text-xl font-bold text-secondary2 font-poppins">Free To Watch</h1>
-      <div>
-        <button
-          class="px-3 min-w-max py-1 text-xs rounded-full bg-gray-100 mr-2"
-          :class="[defaultFreeToWatch.today ? defaultFreeToWatch.class : '']"
-          @click="movies()"
-        >
-          Movies
-        </button>
-        <button
-          class="px-3 min-w-max py-1 text-xs rounded-full bg-gray-100"
-          :class="[defaultFreeToWatch.week ? defaultFreeToWatch.class : '']"
-          @click="tv()"
-        >
-          TV
-        </button>
+      <div class="flex gap-x-2">
+        <Button
+          text="Movies"
+          :type="defaultType == 'movie' ? 'primary' : 'secondary'"
+          @event="switchDefaultTime()"
+        />
+        <Button
+          text="Tv"
+          :type="defaultType == 'tv' ? 'primary' : 'secondary'"
+          @event="switchDefaultTime()"
+        />
       </div>
     </div>
 
@@ -32,14 +28,16 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted, watch } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import FreeToWatchItem from './Home/FreeToWatchItem.vue'
 import DefaultContainer from '@/components/Layouts/DefaultContainer.vue'
+import Button from '@/components/Reusable/Button.vue'
 import { inject } from 'vue'
 
 export default {
   components: {
     FreeToWatchItem,
+    Button,
     DefaultContainer
   },
   setup() {
@@ -47,22 +45,13 @@ export default {
 
     const freeToWatch = ref([])
     const defaultType = ref('movie')
-    const defaultFreeToWatch = reactive({
-      class: 'bg-secondary text-white',
-      today: true,
-      week: false
-    })
 
-    const movies = () => {
-      defaultType.value = 'movie'
-      defaultFreeToWatch.today = true
-      defaultFreeToWatch.week = false
-    }
-
-    const tv = () => {
-      defaultType.value = 'tv'
-      defaultFreeToWatch.week = true
-      defaultFreeToWatch.today = false
+    const switchDefaultTime = () => {
+      if (defaultType.value == 'movie') {
+        defaultType.value = 'tv'
+      } else if (defaultType.value == 'tv') {
+        defaultType.value = 'movie'
+      }
     }
 
     const getFreeToWatch = async () => {
@@ -85,9 +74,8 @@ export default {
     })
 
     return {
-      defaultFreeToWatch,
-      movies,
-      tv,
+      defaultType,
+      switchDefaultTime,
       freeToWatch
     }
   }
