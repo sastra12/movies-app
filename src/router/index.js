@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/pages/Home.vue'
 // Lazy loading
 const Movies = () => import('@/pages/MoviesPage.vue')
+const DetailMovie = () => import('@/pages/DetailMovie.vue')
 
 const routes = [
   {
@@ -12,6 +13,10 @@ const routes = [
   {
     path: '/movies',
     component: Movies
+  },
+  {
+    path: '/movie/:id',
+    component: DetailMovie
   }
 ]
 const router = createRouter({

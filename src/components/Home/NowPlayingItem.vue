@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div>
+  <div class="cursor-pointer">
+    <router-link :to="`movie/${props.item.id}`">
       <img :src="poster_path" alt="" class="rounded-md h-52 w-full bg-cover" />
       <h1 class="mt-3 font-poppins text-lg font-semibold text-secondary">{{ props.item.title }}</h1>
       <span>{{ genreTypeName(props.item.genre_ids) }}</span>
@@ -17,7 +17,7 @@
           <span>{{ Math.round(props.item.vote_average * 10) / 10 }}</span>
         </div>
       </div>
-    </div>
+    </router-link>
   </div>
 </template>
 
