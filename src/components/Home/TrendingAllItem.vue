@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="cursor-pointer">
+  <div class="cursor-pointer">
+    <router-link :to="`${selectedRoute}/${props.item.id}`">
       <img :src="poster_path" alt="" class="rounded-md h-64 w-44 sm:w-full bg-cover" />
       <h1
         v-if="props.item.hasOwnProperty('title')"
@@ -37,7 +37,7 @@
           <span class="text-sm">{{ Math.round(props.item.vote_average * 10) / 10 }}</span>
         </div>
       </div>
-    </div>
+    </router-link>
   </div>
 </template>
 
@@ -59,5 +59,9 @@ const genreTypeName = (genreId) => {
 
 const poster_path = computed(() => {
   return 'https://image.tmdb.org/t/p/w500/' + props.item.poster_path
+})
+
+const selectedRoute = computed(() => {
+  return props.item.media_type == 'movie' ? 'movie' : 'tv'
 })
 </script>
