@@ -60,7 +60,11 @@ const props = defineProps({
 })
 
 const genreTypeName = (genreId) => {
-  return movieStore.genreTypeName(genreId)
+  if (props.type == 'movie') {
+    return movieStore.genreTypeName(genreId)
+  } else if (props.type == 'tv') {
+    return movieStore.genreTvName(genreId)
+  }
 }
 
 const type = computed(() => {

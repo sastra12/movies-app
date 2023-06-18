@@ -30,7 +30,7 @@
           spaceBetween: 10
         },
         '@1.00': {
-          slidesPerView: 5,
+          slidesPerView: 4,
           spaceBetween: 10
         },
         '@1.50': {

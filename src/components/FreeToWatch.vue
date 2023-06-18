@@ -18,7 +18,7 @@
 
     <!-- Free To Watch -->
     <div
-      class="p-2 mt-2 grid grid-cols-2 min-[455px]:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4"
+      class="p-2 mt-2 grid grid-cols-2 min-[455px]:grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-4"
     >
       <div class="pt-2 sm:pt-3" v-for="item in freeToWatch" :key="item.id">
         <FreeToWatchItem :item="item" :type="defaultType" />
@@ -33,6 +33,7 @@ import FreeToWatchItem from './Home/FreeToWatchItem.vue'
 import DefaultContainer from '@/components/Layouts/DefaultContainer.vue'
 import Button from '@/components/Reusable/Button.vue'
 import { inject } from 'vue'
+import { useMoviesStore } from '../stores/movies'
 
 export default {
   components: {
@@ -42,7 +43,7 @@ export default {
   },
   setup() {
     const axiosInstance = inject('$axios')
-
+    const movieStore = useMoviesStore()
     const freeToWatch = ref([])
     const defaultType = ref('movie')
 
@@ -65,8 +66,9 @@ export default {
       }
     }
 
-    onMounted(() => {
+    onMounted(async () => {
       getFreeToWatch()
+      await movieStore.getTvGenres()
     })
 
     watch(defaultType, () => {

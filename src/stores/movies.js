@@ -4,6 +4,7 @@ import { inject } from 'vue'
 export const useMoviesStore = defineStore('movies', {
   state: () => ({
     movieGenres: [],
+    tvGenres: [],
     sort_by: [
       {
         title: 'Popularity Descending',
@@ -47,8 +48,26 @@ export const useMoviesStore = defineStore('movies', {
       const response = await axiosInstance.get(`genre/movie/list`)
       this.movieGenres = response.data.genres
     },
+
+    async getTvGenres() {
+      const axiosInstance = inject('$axios')
+      const response = await axiosInstance.get(`genre/tv/list`)
+      this.tvGenres = response.data.genres
+    },
+
     genreTypeName(genreId) {
       return this.movieGenres
+        .filter(function (genre) {
+          return genreId.includes(genre.id)
+        })
+        .map(function (genre) {
+          return genre.name
+        })
+        .join(', ')
+    },
+
+    genreTvName(genreId) {
+      return this.tvGenres
         .filter(function (genre) {
           return genreId.includes(genre.id)
         })
