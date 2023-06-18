@@ -1,7 +1,7 @@
 <template>
   <router-link :to="`movie/${props.item.id}`" class="cursor-pointer">
     <img :src="poster_path" alt="" class="rounded-md h-52 w-full bg-cover" />
-    <h1 class="mt-3 font-poppins text-lg font-semibold text-secondary">{{ props.item.title }}</h1>
+    <h1 class="mt-3 font-poppins text-sm font-semibold text-secondary">{{ props.item.title }}</h1>
     <span>{{ genreTypeName(props.item.genre_ids) }}</span>
     <div class="flex items-center justify-between">
       <span class="font-poppins text-base font-light">{{ props.item.release_date }}</span>

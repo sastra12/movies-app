@@ -21,19 +21,23 @@
         type: 'progressbar'
       }"
       :breakpoints="{
-        '@0.00': {
+        250: {
+          slidesPerView: 1,
+          spaceBetween: 10
+        },
+        320: {
           slidesPerView: 2,
           spaceBetween: 10
         },
-        '@0.75': {
+        500: {
           slidesPerView: 3,
           spaceBetween: 10
         },
-        '@1.00': {
+        640: {
           slidesPerView: 4,
           spaceBetween: 10
         },
-        '@1.50': {
+        1024: {
           slidesPerView: 6,
           spaceBetween: 10
         }
@@ -48,7 +52,7 @@
 
 <script>
 import { useMoviesStore } from '@/stores/movies.js'
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 // import required modules
 import { Pagination, FreeMode, Autoplay } from 'swiper'

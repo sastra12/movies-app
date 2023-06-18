@@ -1,13 +1,13 @@
 <template>
   <router-link :to="`${selectedRoute}/${props.item.id}`" class="cursor-pointer">
-    <img :src="poster_path" alt="" class="rounded-md h-64 w-44 sm:w-full bg-cover" />
+    <img :src="poster_path" alt="" class="rounded-md h-64 w-full bg-cover" />
     <h1
       v-if="props.item.hasOwnProperty('title')"
-      class="mt-3 font-poppins text-base font-semibold text-secondary"
+      class="mt-3 font-poppins text-sm font-semibold text-secondary"
     >
       {{ props.item.title }}
     </h1>
-    <h1 v-else class="mt-3 font-poppins text-base font-semibold text-secondary">
+    <h1 v-else class="mt-3 font-poppins text-sm font-semibold text-secondary">
       {{ props.item.original_name }}
     </h1>
     <span>{{ genreTypeName(props.item.genre_ids) }}</span>
