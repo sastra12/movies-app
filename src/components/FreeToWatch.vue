@@ -21,7 +21,7 @@
       class="p-2 mt-2 grid grid-cols-2 min-[455px]:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4"
     >
       <div class="pt-2 sm:pt-3" v-for="item in freeToWatch" :key="item.id">
-        <FreeToWatchItem :item="item" />
+        <FreeToWatchItem :item="item" :type="defaultType" />
       </div>
     </div>
   </default-container>
