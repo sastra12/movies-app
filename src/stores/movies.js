@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import { inject } from 'vue'
 
 export const useMoviesStore = defineStore('movies', {
   state: () => ({
@@ -43,14 +42,12 @@ export const useMoviesStore = defineStore('movies', {
   }),
 
   actions: {
-    async getmovieGenres() {
-      const axiosInstance = inject('$axios')
+    async getmovieGenres(axiosInstance) {
       const response = await axiosInstance.get(`genre/movie/list`)
       this.movieGenres = response.data.genres
     },
 
-    async getTvGenres() {
-      const axiosInstance = inject('$axios')
+    async getTvGenres(axiosInstance) {
       const response = await axiosInstance.get(`genre/tv/list`)
       this.tvGenres = response.data.genres
     },

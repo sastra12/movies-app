@@ -62,7 +62,7 @@ import { Pagination, FreeMode, Autoplay } from 'swiper'
 import 'swiper/css'
 
 import 'swiper/css/pagination'
-import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 
 import TrendingAllItem from './Home/TrendingAllItem.vue'
 import DefaultContainer from './Layouts/DefaultContainer.vue'

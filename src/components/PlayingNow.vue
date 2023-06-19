@@ -80,7 +80,7 @@ export default {
 
     onMounted(async () => {
       getNowPlaying()
-      await movieStore.getmovieGenres()
+      await movieStore.getmovieGenres(axiosInstance)
     })
 
     return { modules: [Pagination, FreeMode, Autoplay], nowPlaying }
