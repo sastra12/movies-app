@@ -71,7 +71,7 @@ const active = reactive({
 
 onMounted(async () => {
   getDataMovies()
-  await movieStore.getmovieGenres()
+  await movieStore.getmovieGenres(axiosInstance)
 })
 
 const getDataMovies = async () => {
