@@ -1,7 +1,14 @@
 <template>
   <default-container>
     <h1 class="text-lg sm:text-xl font-bold text-secondary2 font-poppins">Now Playing</h1>
+    <div
+      v-if="loading"
+      class="grid grid-cols-1 min-[455px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 pt-2 sm:pt-3"
+    >
+      <skeleton-loading v-for="n in 4" :key="n" />
+    </div>
     <Swiper
+      v-else
       class="p-4 mt-2"
       :modules="modules"
       :slidesPerView="1"
@@ -54,6 +61,7 @@ import NowPlayingItem from './Home/NowPlayingItem.vue'
 import DefaultContainer from './Layouts/DefaultContainer.vue'
 
 import { useMoviesStore } from '../stores/movies'
+import SkeletonLoading from '@/components/Home/SkeletonLoading.vue'
 import { inject } from 'vue'
 
 export default {
@@ -61,18 +69,24 @@ export default {
     Swiper,
     SwiperSlide,
     NowPlayingItem,
-    DefaultContainer
+    DefaultContainer,
+    SkeletonLoading
   },
   setup() {
     const axiosInstance = inject('$axios')
     const nowPlaying = ref([])
 
     const movieStore = useMoviesStore()
+    const loading = ref(true)
 
     const getNowPlaying = async () => {
+      loading.value = true
+      const response = await axiosInstance.get(`movie/now_playing`)
       try {
-        const response = await axiosInstance.get(`movie/now_playing`)
-        nowPlaying.value = response.data.results.splice(0, 12)
+        setTimeout(() => {
+          nowPlaying.value = response.data.results.splice(0, 12)
+          loading.value = false
+        }, 1000)
       } catch (error) {
         console.log(error)
       }
@@ -83,7 +97,7 @@ export default {
       await movieStore.getmovieGenres(axiosInstance)
     })
 
-    return { modules: [Pagination, FreeMode, Autoplay], nowPlaying }
+    return { modules: [Pagination, FreeMode, Autoplay], nowPlaying, loading }
   }
 }
 </script>

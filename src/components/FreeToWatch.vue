@@ -17,8 +17,11 @@
     </div>
 
     <!-- Free To Watch -->
-    <div v-if="loading" class="flex gap-4 p-2 mt-2">
-      <free-to-watch-item-skeleton v-for="n in 5" :key="n" />
+    <div
+      v-if="loading"
+      class="grid grid-cols-2 min-[455px]:grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-4 pt-2 sm:pt-3"
+    >
+      <skeleton-loading v-for="n in 5" :key="n" />
     </div>
     <div
       class="grid grid-cols-2 min-[455px]:grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-4"
@@ -35,7 +38,7 @@
 import { ref, onMounted, watch } from 'vue'
 import FreeToWatchItem from './Home/FreeToWatchItem.vue'
 import DefaultContainer from '@/components/Layouts/DefaultContainer.vue'
-import FreeToWatchItemSkeleton from '@/components/Home/FreeToWatchItemSkeleton.vue'
+import SkeletonLoading from '@/components/Home/SkeletonLoading.vue'
 import Button from '@/components/Reusable/Button.vue'
 import { inject } from 'vue'
 import { useMoviesStore } from '../stores/movies'
@@ -45,7 +48,7 @@ export default {
     FreeToWatchItem,
     Button,
     DefaultContainer,
-    FreeToWatchItemSkeleton
+    SkeletonLoading
   },
   setup() {
     const axiosInstance = inject('$axios')

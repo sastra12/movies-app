@@ -12,7 +12,14 @@
         @event="getMovieByCategory(item.id)"
       />
     </div>
+    <div
+      v-if="loading"
+      class="grid grid-cols-2 min-[455px]:grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-4 pt-2 sm:pt-3"
+    >
+      <skeleton-loading v-for="n in 6" :key="n" />
+    </div>
     <Swiper
+      v-else
       class="p-4 mt-2 sm:mt-8"
       :modules="modules"
       :slidesPerView="1"
@@ -60,6 +67,7 @@ import CategoryItem from '@/components/Home/CategoryItem.vue'
 import DefaultContainer from '@/components/Layouts/DefaultContainer.vue'
 import { inject } from 'vue'
 import Button from '@/components/Reusable/Button.vue'
+import SkeletonLoading from '@/components/Home/SkeletonLoading.vue'
 
 // Import Swiper styles
 import 'swiper/css'
@@ -72,7 +80,8 @@ export default {
     SwiperSlide,
     Button,
     CategoryItem,
-    DefaultContainer
+    DefaultContainer,
+    SkeletonLoading
   },
   setup() {
     const axiosInstance = inject('$axios')
@@ -80,16 +89,21 @@ export default {
       id: null
     })
     const movieByCategory = ref([])
+    const loading = ref(true)
 
     const movieStore = useMoviesStore()
 
     const getMovieByCategory = async (id) => {
       defaultCategory.id = id == null ? 28 : id
+      const response = await axiosInstance.get(
+        `discover/movie?with_genres=${defaultCategory.id}&page=1`
+      )
+      loading.value = true
       try {
-        const response = await axiosInstance.get(
-          `discover/movie?with_genres=${defaultCategory.id}&page=1`
-        )
-        movieByCategory.value = response.data.results
+        setTimeout(() => {
+          movieByCategory.value = response.data.results
+          loading.value = false
+        }, 1000)
       } catch (error) {
         console.log(error)
       }
@@ -109,7 +123,8 @@ export default {
       movieStore,
       movieByCategory,
       defaultCategory,
-      getMovieByCategory
+      getMovieByCategory,
+      loading
     }
   }
 }
