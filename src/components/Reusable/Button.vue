@@ -14,18 +14,22 @@ const props = defineProps({
   },
   type: {
     type: String
+  },
+  rounded: {
+    type: String
   }
 })
 const buttonClass = computed(() => {
   return {
-    [props.type]: true
+    [props.type]: true,
+    [props.rounded]: true
   }
 })
 </script>
 
 <style scoped>
 button {
-  @apply px-3 min-w-max py-1 text-xs rounded-full;
+  @apply px-3 min-w-max py-1 text-xs;
 }
 .primary {
   @apply bg-secondary text-white;

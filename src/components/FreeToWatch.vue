@@ -5,11 +5,13 @@
       <div class="flex gap-x-2">
         <Button
           text="Movies"
+          rounded="rounded-full"
           :type="defaultType == 'movie' ? 'primary' : 'secondary'"
           @event="switchDefaultTime()"
         />
         <Button
           text="Tv"
+          rounded="rounded-full"
           :type="defaultType == 'tv' ? 'primary' : 'secondary'"
           @event="switchDefaultTime()"
         />
@@ -24,8 +26,8 @@
       <skeleton-loading v-for="n in 5" :key="n" />
     </div>
     <div
-      class="grid grid-cols-2 min-[455px]:grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-4"
       v-else
+      class="grid grid-cols-2 min-[455px]:grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-4"
     >
       <div class="pt-2 sm:pt-3" v-for="item in freeToWatch" :key="item.id">
         <FreeToWatchItem :item="item" :type="defaultType" />
@@ -55,7 +57,7 @@ export default {
     const movieStore = useMoviesStore()
     const freeToWatch = ref([])
     const defaultType = ref('movie')
-    const loading = ref(true)
+    const loading = ref(false)
 
     const switchDefaultTime = () => {
       if (defaultType.value == 'movie') {

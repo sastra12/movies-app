@@ -9,6 +9,7 @@
         :key="item.id"
         :text="item.name"
         :type="item.id == defaultCategory.id ? 'primary' : 'secondary'"
+        rounded="rounded-full"
         @event="getMovieByCategory(item.id)"
       />
     </div>

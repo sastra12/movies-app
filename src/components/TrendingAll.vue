@@ -5,11 +5,13 @@
       <div class="flex gap-x-2">
         <Button
           text="Today"
+          rounded="rounded-full"
           :type="defaultTime == 'day' ? 'primary' : 'secondary'"
           @event="switchDefaultTime()"
         />
         <Button
           text="This Week"
+          rounded="rounded-full"
           :type="defaultTime == 'week' ? 'primary' : 'secondary'"
           @event="switchDefaultTime()"
         />

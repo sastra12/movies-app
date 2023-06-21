@@ -4,7 +4,7 @@
       <h1 class="text-lg sm:text-xl font-bold text-secondary2 font-poppins">Movies</h1>
     </div>
 
-    <div class="flex flex-col sm:flex-row sm:gap-x-2 sm:mt-4">
+    <div class="flex flex-col sm:flex-row sm:gap-x-2 sm:mt-2">
       <div class="sm:w-2/5 md:w-2/6 lg:w-1/4">
         <accordion header="Sort">
           <div class="px-2 py-3 rounded-md">
@@ -43,8 +43,17 @@
         class="px-2 grid grid-cols-2 min-[455px]:grid-cols-2 min-[800px]:grid-cols-3 lg:grid-cols-4 gap-2 sm:w-3/5 md:w-4/6 lg:w-3/4"
       >
         <div class="pt-2 sm:pt-3" v-for="item in movies" :key="item.id">
-          <NowPlayingMovies :item="item" />
+          <DiscoverMovies :item="item" />
         </div>
+      </div>
+    </div>
+    <div class="px-2 sm:w-3/5 md:w-4/6 lg:w-3/4 mt-6 ml-auto">
+      <div class="flex gap-4 justify-center">
+        <Button text="First Page" type="secondary" rounded="rounded-md" />
+        <Button text="Prev" type="secondary" rounded="rounded-md" @event="previousPage" />
+        <span class="text-xs my-auto">{{ page }}</span>
+        <Button text="Next" type="primary" rounded="rounded-md" @event="nextPage" />
+        <Button text="Last Page" type="primary" rounded="rounded-md" />
       </div>
     </div>
   </default-container>
@@ -53,16 +62,23 @@
 <script setup>
 import DefaultContainer from '../components/Layouts/DefaultContainer.vue'
 import Accordion from '@/components/Reusable/Accordion.vue'
-import NowPlayingMovies from '@/components/Movies/NowPlayingMovies.vue'
+import DiscoverMovies from '@/components/Movies/DiscoverMovies.vue'
 import { useMoviesStore } from '../stores/movies'
 import { inject } from 'vue'
-
 import { ref, onMounted, reactive, watch, computed } from 'vue'
+import Button from '@/components/Reusable/Button.vue'
+import { useRouter, useRoute, onBeforeRouteUpdate } from 'vue-router'
+
 const movieStore = useMoviesStore()
 const axiosInstance = inject('$axios')
 const movies = ref([])
 const sort_by = ref('popularity.desc')
 const with_genres = ref([])
+const router = useRouter()
+const route = useRoute()
+const totalPage = ref()
+const page = ref(Number.parseInt(route.query.page) || 1)
+
 const active = reactive({
   class: 'bg-secondary text-white',
   item: '',
@@ -74,24 +90,43 @@ onMounted(async () => {
   await movieStore.getmovieGenres(axiosInstance)
 })
 
+onBeforeRouteUpdate((to, from, next) => {
+  // Remove query parameter from the URL
+  const urlWithoutQueryParam = to.path
+
+  // Update the route without the query parameter
+  next({ path: urlWithoutQueryParam })
+})
+
 const getDataMovies = async () => {
   try {
     const response = await axiosInstance.get(
-      `discover/movie?&sort_by=${sort_by.value}&with_genres=${convertWithGenresToString.value}`
+      `discover/movie?&sort_by=${sort_by.value}&with_genres=${convertWithGenresToString.value}&page=${page.value}`
     )
     movies.value = response.data.results
+    totalPage.value = response.data.total_pages
   } catch (error) {
     console.log(error)
   }
 }
 
 watch(
-  [sort_by, with_genres],
+  [sort_by, with_genres, page],
   () => {
     getDataMovies()
   },
   { deep: true }
 )
+
+watch(page, () => {
+  setTimeout(() => {
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    })
+  }, 1000)
+})
 
 const addSortBy = (item) => {
   active.item = item.title
@@ -112,9 +147,27 @@ const selectGenres = (genreId) => {
   if (with_genres.value.includes(genreId)) {
     // Remove the genre from the selected genres if it is already selected
     with_genres.value = with_genres.value.filter((genre) => genre !== genreId)
+    page.value = 1
   } else {
     // Add the genre to the selected genres if it is not already selected
     with_genres.value.push(genreId)
+    page.value = 1
+  }
+}
+
+const previousPage = () => {
+  if (page.value > 1) {
+    page.value--
+    const query = { page: page.value }
+    router.push({ name: 'Movies', query: query })
+  }
+}
+
+const nextPage = () => {
+  if (page.value < totalPage.value) {
+    page.value++
+    const query = { page: page.value }
+    router.push({ name: 'Movies', query: query })
   }
 }
 </script>
