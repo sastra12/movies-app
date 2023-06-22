@@ -43,7 +43,9 @@
             v-for="nav in links"
             :key="nav"
           >
-            <a :href="nav.link">{{ nav.name }}</a>
+            <router-link :to="nav.link" :class="[activeLink == nav.link ? 'text-secondary' : '']">{{
+              nav.name
+            }}</router-link>
           </li>
         </ul>
       </div>
@@ -52,8 +54,10 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import { useRoute } from 'vue-router'
 
+const route = useRoute()
 const openMenu = ref(false)
 const links = ref([
   { link: '/movies', name: 'Movies' },
@@ -64,4 +68,8 @@ const links = ref([
 const changeMenu = () => {
   openMenu.value = !openMenu.value
 }
+
+const activeLink = computed(() => {
+  return route.fullPath
+})
 </script>
