@@ -18,7 +18,7 @@ const props = defineProps({
 
 const poster_path = computed(() => {
   if (props.item.profile_path) {
-    return 'https://image.tmdb.org/t/p/w500/' + props.item.profile_path
+    return 'https://image.tmdb.org/t/p/w500' + props.item.profile_path
   } else if (props.item.profile_path == null) {
     return 'https://via.placeholder.com/300x450'
   }

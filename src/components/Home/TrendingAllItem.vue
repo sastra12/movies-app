@@ -51,7 +51,7 @@ const genreTypeName = (genreId) => {
 }
 
 const poster_path = computed(() => {
-  return 'https://image.tmdb.org/t/p/w500/' + props.item.poster_path
+  return 'https://image.tmdb.org/t/p/w500' + props.item.poster_path
 })
 
 const selectedRoute = computed(() => {

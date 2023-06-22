@@ -49,11 +49,11 @@
     </div>
     <div class="px-2 sm:w-3/5 md:w-4/6 lg:w-3/4 mt-6 ml-auto">
       <div class="flex gap-4 justify-center">
-        <Button text="First Page" type="secondary" rounded="rounded-md" />
+        <Button text="First Page" type="secondary" rounded="rounded-md" @event="firstPage" />
         <Button text="Prev" type="secondary" rounded="rounded-md" @event="previousPage" />
         <span class="text-xs my-auto">{{ page }}</span>
         <Button text="Next" type="primary" rounded="rounded-md" @event="nextPage" />
-        <Button text="Last Page" type="primary" rounded="rounded-md" />
+        <Button text="Last Page" type="primary" rounded="rounded-md" @event="lastPage" />
       </div>
     </div>
   </default-container>
@@ -76,7 +76,7 @@ const sort_by = ref('popularity.desc')
 const with_genres = ref([])
 const router = useRouter()
 const route = useRoute()
-const totalPage = ref()
+const totalPage = ref(500)
 const page = ref(Number.parseInt(route.query.page) || 1)
 
 const active = reactive({
@@ -104,7 +104,6 @@ const getDataMovies = async () => {
       `discover/movie?&sort_by=${sort_by.value}&with_genres=${convertWithGenresToString.value}&page=${page.value}`
     )
     movies.value = response.data.results
-    totalPage.value = response.data.total_pages
   } catch (error) {
     console.log(error)
   }
@@ -166,6 +165,20 @@ const previousPage = () => {
 const nextPage = () => {
   if (page.value < totalPage.value) {
     page.value++
+    const query = { page: page.value }
+    router.push({ name: 'Movies', query: query })
+  }
+}
+
+const lastPage = () => {
+  page.value = totalPage.value
+  const query = { page: totalPage.value }
+  router.push({ name: 'Movies', query: query })
+}
+
+const firstPage = () => {
+  if (page.value == totalPage.value) {
+    page.value = 1
     const query = { page: page.value }
     router.push({ name: 'Movies', query: query })
   }
