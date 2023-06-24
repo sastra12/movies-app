@@ -23,6 +23,10 @@ const routes = [
   {
     path: '/tv/:id',
     component: DetailTv
+  },
+  {
+    path: '/tv/:id',
+    component: DetailTv
   }
 ]
 const router = createRouter({
