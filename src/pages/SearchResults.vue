@@ -33,7 +33,7 @@
 import DefaultContainer from '../components/Layouts/DefaultContainer.vue'
 import SearchResultItem from '../components/Movies/SearchResultItem.vue'
 import { useRoute, useRouter } from 'vue-router'
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref, toRef, watch } from 'vue'
 import { inject } from 'vue'
 import SkeletonLoading from '../components/Home/SkeletonLoading.vue'
 import { useMoviesStore } from '../stores/movies'
@@ -44,7 +44,9 @@ const route = useRoute()
 const axiosInstance = inject('$axios')
 const searchResults = ref([])
 const searchQuery = ref(route.query.query)
+const search = toRef(searchQuery.value)
 const pageNumber = ref(Number(route.query.page))
+const page = toRef(pageNumber)
 const totalPages = ref()
 const loading = ref(false)
 const movieStore = useMoviesStore()
@@ -89,9 +91,7 @@ watch(pageNumber, () => {
   }, 1000)
 })
 
-watch([() => route.query.query, () => route.query.page], ([newSearchQuery, newPageNumber]) => {
-  searchQuery.value = newSearchQuery
-  pageNumber.value = Number(newPageNumber)
+watch([search, page], () => {
   getSearchQuery()
 })
 </script>
