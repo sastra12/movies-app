@@ -17,17 +17,27 @@
         <SearchResultItem :item="item" />
       </div>
     </div>
+    <div class="px-2 sm:w-3/5 md:w-4/6 lg:w-3/4 mt-6 mx-auto">
+      <div class="flex gap-4 justify-center">
+        <Button text="First Page" type="secondary" rounded="rounded-md" @event="firstPage" />
+        <Button text="Prev" type="secondary" rounded="rounded-md" @event="previousPage" />
+        <span class="text-xs my-auto">{{ pageNumber }}</span>
+        <Button text="Next" type="primary" rounded="rounded-md" @event="nextPage" />
+        <Button text="Last Page" type="primary" rounded="rounded-md" @event="lastPage" />
+      </div>
+    </div>
   </default-container>
 </template>
 
 <script setup>
 import DefaultContainer from '../components/Layouts/DefaultContainer.vue'
 import SearchResultItem from '../components/Movies/SearchResultItem.vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { onMounted, ref, watch } from 'vue'
 import { inject } from 'vue'
 import SkeletonLoading from '../components/Home/SkeletonLoading.vue'
 import { useMoviesStore } from '../stores/movies'
+import Button from '@/components/Reusable/Button.vue'
 
 const route = useRoute()
 const axiosInstance = inject('$axios')
@@ -36,6 +46,7 @@ const searchQuery = ref(route.query.query)
 const pageNumber = ref(Number(route.query.page))
 const totalPages = ref()
 const loading = ref(false)
+const router = useRouter()
 const movieStore = useMoviesStore()
 
 onMounted(async () => {
@@ -49,11 +60,10 @@ const getSearchQuery = async () => {
   const response = await axiosInstance.get(
     `search/multi?query=${searchQuery.value}&page=${pageNumber.value}`
   )
-  console.log(response)
   try {
     setTimeout(() => {
       searchResults.value = response.data.results
-      totalPages.value = response.data.totalPages
+      totalPages.value = response.data.total_pages
       loading.value = false
     }, 1000)
   } catch (error) {
@@ -61,11 +71,39 @@ const getSearchQuery = async () => {
   }
 }
 
-watch(
-  () => route.query.query,
-  (newVal) => {
-    searchQuery.value = newVal
-    getSearchQuery()
+watch([() => route.query.query, () => route.query.page], ([newSearchQuery, newPageNumber]) => {
+  searchQuery.value = newSearchQuery
+  pageNumber.value = Number(newPageNumber)
+  getSearchQuery()
+})
+
+const previousPage = () => {
+  if (pageNumber.value > 1) {
+    pageNumber.value--
+    const query = { query: searchQuery.value, page: pageNumber.value }
+    router.push({ name: 'SearchResult', query: query })
   }
-)
+}
+
+const nextPage = () => {
+  if (pageNumber.value < totalPages.value) {
+    pageNumber.value++
+    const query = { query: searchQuery.value, page: pageNumber.value }
+    router.push({ name: 'SearchResult', query: query })
+  }
+}
+
+const lastPage = () => {
+  pageNumber.value = totalPages.value
+  const query = { query: searchQuery.value, page: totalPages.value }
+  router.push({ name: 'SearchResult', query: query })
+}
+
+const firstPage = () => {
+  if (pageNumber.value == totalPages.value) {
+    pageNumber.value = 1
+    const query = { query: searchQuery.value, page: pageNumber.value }
+    router.push({ name: 'SearchResult', query: query })
+  }
+}
 </script>
