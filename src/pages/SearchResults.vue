@@ -1,7 +1,7 @@
 <template>
   <default-container>
     <h1 class="text-lg sm:text-xl font-bold font-poppins text-center">
-      Search result for <span class="text-secondary2">"Spiderman"</span>
+      Search result for <span class="text-secondary2">"{{ searchQuery }}"</span>
     </h1>
     <div
       v-if="loading"
@@ -32,7 +32,7 @@ import { useMoviesStore } from '../stores/movies'
 const route = useRoute()
 const axiosInstance = inject('$axios')
 const searchResults = ref([])
-const searchQuery = ref()
+const searchQuery = ref(route.query.query)
 const pageNumber = ref(Number(route.query.page))
 const totalPages = ref()
 const loading = ref(false)
@@ -49,6 +49,7 @@ const getSearchQuery = async () => {
   const response = await axiosInstance.get(
     `search/multi?query=${searchQuery.value}&page=${pageNumber.value}`
   )
+  console.log(response)
   try {
     setTimeout(() => {
       searchResults.value = response.data.results
