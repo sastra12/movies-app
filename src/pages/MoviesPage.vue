@@ -51,7 +51,7 @@
       <div class="flex gap-4 justify-center">
         <Button text="First Page" type="secondary" rounded="rounded-md" @event="firstPage" />
         <Button text="Prev" type="secondary" rounded="rounded-md" @event="previousPage" />
-        <span class="text-xs my-auto">{{ page }}</span>
+        <span class="text-xs my-auto">{{ pageNumber }}</span>
         <Button text="Next" type="primary" rounded="rounded-md" @event="nextPage" />
         <Button text="Last Page" type="primary" rounded="rounded-md" @event="lastPage" />
       </div>
@@ -67,23 +67,31 @@ import { useMoviesStore } from '../stores/movies'
 import { inject } from 'vue'
 import { ref, onMounted, reactive, watch, computed } from 'vue'
 import Button from '@/components/Reusable/Button.vue'
-import { useRouter, useRoute, onBeforeRouteUpdate } from 'vue-router'
+import { useRoute, onBeforeRouteUpdate } from 'vue-router'
+import { usePreviousAndNextPage } from '@/composable/usePreviousAndNextPage.js'
 
 const movieStore = useMoviesStore()
 const axiosInstance = inject('$axios')
 const movies = ref([])
 const sort_by = ref('popularity.desc')
 const with_genres = ref([])
-const router = useRouter()
 const route = useRoute()
-const totalPage = ref(500)
-const page = ref(Number.parseInt(route.query.page) || 1)
+const totalPages = ref(500)
+const pageNumber = ref(Number.parseInt(route.query.page) || 1)
+const routeName = 'Movies'
 
 const active = reactive({
   class: 'bg-secondary text-white',
   item: '',
   id: ''
 })
+
+const { previousPage, nextPage, lastPage, firstPage } = usePreviousAndNextPage(
+  pageNumber,
+  totalPages,
+  undefined,
+  routeName
+)
 
 onMounted(async () => {
   getDataMovies()
@@ -101,7 +109,7 @@ onBeforeRouteUpdate((to, from, next) => {
 const getDataMovies = async () => {
   try {
     const response = await axiosInstance.get(
-      `discover/movie?&sort_by=${sort_by.value}&with_genres=${convertWithGenresToString.value}&page=${page.value}`
+      `discover/movie?&sort_by=${sort_by.value}&with_genres=${convertWithGenresToString.value}&page=${pageNumber.value}`
     )
     movies.value = response.data.results
   } catch (error) {
@@ -110,14 +118,14 @@ const getDataMovies = async () => {
 }
 
 watch(
-  [sort_by, with_genres, page],
+  [sort_by, with_genres, pageNumber],
   () => {
     getDataMovies()
   },
   { deep: true }
 )
 
-watch(page, () => {
+watch(pageNumber, () => {
   setTimeout(() => {
     window.scroll({
       top: 0,
@@ -146,41 +154,11 @@ const selectGenres = (genreId) => {
   if (with_genres.value.includes(genreId)) {
     // Remove the genre from the selected genres if it is already selected
     with_genres.value = with_genres.value.filter((genre) => genre !== genreId)
-    page.value = 1
+    pageNumber.value = 1
   } else {
     // Add the genre to the selected genres if it is not already selected
     with_genres.value.push(genreId)
-    page.value = 1
-  }
-}
-
-const previousPage = () => {
-  if (page.value > 1) {
-    page.value--
-    const query = { page: page.value }
-    router.push({ name: 'Movies', query: query })
-  }
-}
-
-const nextPage = () => {
-  if (page.value < totalPage.value) {
-    page.value++
-    const query = { page: page.value }
-    router.push({ name: 'Movies', query: query })
-  }
-}
-
-const lastPage = () => {
-  page.value = totalPage.value
-  const query = { page: totalPage.value }
-  router.push({ name: 'Movies', query: query })
-}
-
-const firstPage = () => {
-  if (page.value == totalPage.value) {
-    page.value = 1
-    const query = { page: page.value }
-    router.push({ name: 'Movies', query: query })
+    pageNumber.value = 1
   }
 }
 </script>

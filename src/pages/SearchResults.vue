@@ -7,7 +7,7 @@
       v-if="loading"
       class="grid grid-cols-2 min-[455px]:grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-4 pt-2 sm:pt-3"
     >
-      <skeleton-loading v-for="n in 10" :key="n" />
+      <skeleton-loading v-for="n in 15" :key="n" />
     </div>
     <div
       v-else
@@ -38,6 +38,7 @@ import { inject } from 'vue'
 import SkeletonLoading from '../components/Home/SkeletonLoading.vue'
 import { useMoviesStore } from '../stores/movies'
 import Button from '@/components/Reusable/Button.vue'
+import { usePreviousAndNextPage } from '@/composable/usePreviousAndNextPage.js'
 
 const route = useRoute()
 const axiosInstance = inject('$axios')
@@ -46,8 +47,15 @@ const searchQuery = ref(route.query.query)
 const pageNumber = ref(Number(route.query.page))
 const totalPages = ref()
 const loading = ref(false)
-const router = useRouter()
 const movieStore = useMoviesStore()
+const routeName = 'SearchResult'
+
+const { previousPage, nextPage, lastPage, firstPage } = usePreviousAndNextPage(
+  pageNumber,
+  totalPages,
+  searchQuery,
+  routeName
+)
 
 onMounted(async () => {
   getSearchQuery()
@@ -71,39 +79,19 @@ const getSearchQuery = async () => {
   }
 }
 
+watch(pageNumber, () => {
+  setTimeout(() => {
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    })
+  }, 1000)
+})
+
 watch([() => route.query.query, () => route.query.page], ([newSearchQuery, newPageNumber]) => {
   searchQuery.value = newSearchQuery
   pageNumber.value = Number(newPageNumber)
   getSearchQuery()
 })
-
-const previousPage = () => {
-  if (pageNumber.value > 1) {
-    pageNumber.value--
-    const query = { query: searchQuery.value, page: pageNumber.value }
-    router.push({ name: 'SearchResult', query: query })
-  }
-}
-
-const nextPage = () => {
-  if (pageNumber.value < totalPages.value) {
-    pageNumber.value++
-    const query = { query: searchQuery.value, page: pageNumber.value }
-    router.push({ name: 'SearchResult', query: query })
-  }
-}
-
-const lastPage = () => {
-  pageNumber.value = totalPages.value
-  const query = { query: searchQuery.value, page: totalPages.value }
-  router.push({ name: 'SearchResult', query: query })
-}
-
-const firstPage = () => {
-  if (pageNumber.value == totalPages.value) {
-    pageNumber.value = 1
-    const query = { query: searchQuery.value, page: pageNumber.value }
-    router.push({ name: 'SearchResult', query: query })
-  }
-}
 </script>
