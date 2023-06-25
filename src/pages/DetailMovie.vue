@@ -51,7 +51,7 @@
     <div class="mt-4 sm:mt-8">
       <h1 class="text-lg font-bold font-poppins">Top Cast</h1>
       <Swiper
-        class="p-4 mt-2 sm:mt-8"
+        class="p-4 mt-2 sm:mt-6"
         :modules="modules"
         :slidesPerView="1"
         :freeMode="true"

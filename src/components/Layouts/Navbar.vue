@@ -35,11 +35,17 @@
         :class="[openMenu ? 'top-[52px]' : '-top-60']"
       >
         <input
+          v-model="search"
           placeholder="Search..."
           type="text"
-          class="text-slate-400 mt-3 min-[800px]:mt-0 border-2 border-secondary rounded-min-[800px] py-1.5 min-[800px]:py-0 px-3 focus:outline-none focus:ring focus:ring-teal-500 bg-white"
+          class="text-slate-400 mt-3 min-[800px]:mt-0 border-2 border-secondary rounded-min-sm py-1.5 min-[800px]:py-0 px-2 focus:outline-none focus:ring focus:ring-teal-500 bg-white"
         />
-        <button class="bg-secondary px-2 py-1.5 rounded-min-[800px] ml-2 text-white">Search</button>
+        <button
+          @click="searchValue"
+          class="bg-secondary px-2 py-1.5 rounded-min-sm ml-2 text-white"
+        >
+          Search
+        </button>
         <li
           class="py-3 text-base min-[800px]:my-auto hover:text-secondary min-[800px]:py-0 min-[800px]:ml-4 min-[800px]:text-lg min-[800px]:text-white"
           v-for="nav in links"
@@ -56,10 +62,12 @@
 
 <script setup>
 import { computed, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
 const openMenu = ref(false)
+const router = useRouter()
+const search = ref('')
 const links = ref([
   { link: '/movies', name: 'Movies' },
   { link: '#', name: 'Tv Show' },
@@ -73,4 +81,11 @@ const changeMenu = () => {
 const activeLink = computed(() => {
   return route.fullPath
 })
+
+const searchValue = () => {
+  router.push({
+    name: 'SearchResult',
+    query: { query: search.value, page: 1 }
+  })
+}
 </script>
