@@ -28,7 +28,7 @@
       </span>
       <!-- Navigation Menu -->
       <ul
-        class="absolute duration-700 ease-in px-6 min-[800px]:px-0 bg-white w-full z-50 left-0 min-[800px]:static min-[800px]:flex min-[800px]:w-auto min-[800px]:bg-primary min-[800px]:duration-0"
+        class="absolute duration-700 ease-in text-center bg-white w-full z-50 left-0 min-[800px]:static min-[800px]:flex min-[800px]:w-auto min-[800px]:bg-primary min-[800px]:duration-0"
         :class="[openMenu ? 'top-[52px]' : '-top-60']"
       >
         <input
@@ -36,7 +36,7 @@
           v-model="search"
           placeholder="Search..."
           type="text"
-          class="text-slate-400 mt-3 min-[800px]:mt-0 border-2 max-[799px]:w-7/12 border-secondary rounded-sm py-1.5 min-[800px]:py-0 px-2 focus:outline-none focus:ring focus:ring-teal-500 bg-white"
+          class="text-slate-400 mt-3 min-[800px]:mt-0 border-2 border-secondary rounded-sm py-1.5 min-[800px]:py-0 px-2 focus:outline-none focus:ring focus:ring-teal-500 bg-white"
         />
         <button @click="searchValue" class="bg-secondary px-2 py-1.5 rounded-sm ml-2 text-white">
           Search
