@@ -79,9 +79,13 @@ const activeLink = computed(() => {
 })
 
 const searchValue = () => {
-  router.push({
-    name: 'SearchResult',
-    query: { query: search.value, page: 1 }
-  })
+  if (search.value === '') {
+    alert('Search form can not be empty')
+  } else {
+    router.push({
+      name: 'SearchResult',
+      query: { query: search.value, page: 1 }
+    })
+  }
 }
 </script>
