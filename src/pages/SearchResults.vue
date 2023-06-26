@@ -32,7 +32,7 @@
 <script setup>
 import DefaultContainer from '../components/Layouts/DefaultContainer.vue'
 import SearchResultItem from '../components/Movies/SearchResultItem.vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { onMounted, ref, toRef, watch } from 'vue'
 import { inject } from 'vue'
 import SkeletonLoading from '../components/Home/SkeletonLoading.vue'
