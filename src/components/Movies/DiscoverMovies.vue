@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="cursor-pointer">
+  <div class="cursor-pointer">
+    <router-link :to="`movie/${props.item.id}`">
       <img
         :src="poster_path"
         alt=""
@@ -41,7 +41,7 @@
           <span class="text-xs">{{ Math.round(props.item.vote_average * 10) / 10 }}</span>
         </div>
       </div>
-    </div>
+    </router-link>
   </div>
 </template>
 
