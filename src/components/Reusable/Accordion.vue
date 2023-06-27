@@ -35,7 +35,7 @@ const props = defineProps({
     required: true
   }
 })
-const isOpen = ref(false)
+const isOpen = ref(true)
 
 const open = () => {
   isOpen.value = !isOpen.value

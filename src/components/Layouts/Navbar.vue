@@ -66,7 +66,7 @@ const router = useRouter()
 const search = ref('')
 const links = ref([
   { link: '/movies', name: 'Movies' },
-  { link: '#', name: 'Tv Show' },
+  { link: '/tv', name: 'Tv Show' },
   { link: '#', name: 'People' }
 ])
 
