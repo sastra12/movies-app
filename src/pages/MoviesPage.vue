@@ -11,7 +11,7 @@
             <span class="text-sm sm:text-base font-semibold">Sort Results By</span>
             <div
               class="py-2 text-sm sm:text-base hover:bg-secondary hover:text-white px-2 cursor-pointer rounded-sm my-2"
-              :class="[active.item == item.title || item.value == sort_by ? active.class : '']"
+              :class="[item.value == sort_by ? 'bg-secondary text-white' : '']"
               v-for="item in movieStore.sort_by"
               :key="item"
               @click="addSortBy(item)"
@@ -40,6 +40,15 @@
       </div>
 
       <div
+        v-if="loading"
+        class="px-2 grid grid-cols-2 min-[455px]:grid-cols-2 min-[800px]:grid-cols-3 lg:grid-cols-4 gap-2 sm:w-3/5 md:w-4/6 lg:w-3/4"
+      >
+        <div class="pt-2 sm:pt-3" v-for="n in 20" :key="n">
+          <SkeletonLoading />
+        </div>
+      </div>
+      <div
+        v-else
         class="px-2 grid grid-cols-2 min-[455px]:grid-cols-2 min-[800px]:grid-cols-3 lg:grid-cols-4 gap-2 sm:w-3/5 md:w-4/6 lg:w-3/4"
       >
         <div class="pt-2 sm:pt-3" v-for="item in movies" :key="item.id">
@@ -69,6 +78,7 @@ import { ref, onMounted, reactive, watch, computed } from 'vue'
 import Button from '@/components/Reusable/Button.vue'
 import { useRoute, onBeforeRouteUpdate } from 'vue-router'
 import { usePreviousAndNextPage } from '@/composable/usePreviousAndNextPage.js'
+import SkeletonLoading from '../components/Home/SkeletonLoading.vue'
 
 const movieStore = useMoviesStore()
 const axiosInstance = inject('$axios')
@@ -79,12 +89,7 @@ const route = useRoute()
 const totalPages = ref(500)
 const pageNumber = ref(Number.parseInt(route.query.page) || 1)
 const routeName = 'Movies'
-
-const active = reactive({
-  class: 'bg-secondary text-white',
-  item: '',
-  id: ''
-})
+const loading = ref(false)
 
 const { previousPage, nextPage, lastPage, firstPage } = usePreviousAndNextPage(
   pageNumber,
@@ -107,11 +112,15 @@ onBeforeRouteUpdate((to, from, next) => {
 })
 
 const getDataMovies = async () => {
+  loading.value = true
+  const response = await axiosInstance.get(
+    `discover/movie?&sort_by=${sort_by.value}&with_genres=${convertWithGenresToString.value}&page=${pageNumber.value}`
+  )
   try {
-    const response = await axiosInstance.get(
-      `discover/movie?&sort_by=${sort_by.value}&with_genres=${convertWithGenresToString.value}&page=${pageNumber.value}`
-    )
-    movies.value = response.data.results
+    setTimeout(() => {
+      movies.value = response.data.results
+      loading.value = false
+    }, 800)
   } catch (error) {
     console.log(error)
   }
@@ -136,7 +145,6 @@ watch(pageNumber, () => {
 })
 
 const addSortBy = (item) => {
-  active.item = item.title
   sort_by.value = item.value
 }
 
