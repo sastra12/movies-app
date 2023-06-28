@@ -20,7 +20,7 @@
 
     <!-- Free To Watch -->
     <div
-      v-if="loading"
+      v-if="data.loading"
       class="grid grid-cols-2 min-[455px]:grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-4 pt-2 sm:pt-3"
     >
       <skeleton-loading v-for="n in 5" :key="n" />
@@ -29,7 +29,7 @@
       v-else
       class="grid grid-cols-2 min-[455px]:grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-4"
     >
-      <div class="pt-2 sm:pt-3" v-for="item in freeToWatch" :key="item.id">
+      <div class="pt-2 sm:pt-3" v-for="item in data.response" :key="item.id">
         <FreeToWatchItem :item="item" :type="defaultType" />
       </div>
     </div>
@@ -37,13 +37,13 @@
 </template>
 
 <script>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, inject } from 'vue'
 import FreeToWatchItem from './Home/FreeToWatchItem.vue'
 import DefaultContainer from '@/components/Layouts/DefaultContainer.vue'
 import SkeletonLoading from '@/components/Home/SkeletonLoading.vue'
 import Button from '@/components/Reusable/Button.vue'
-import { inject } from 'vue'
 import { useMoviesStore } from '../stores/movies'
+import { useGetApi } from '@/composable/useGetApi'
 
 export default {
   components: {
@@ -55,9 +55,7 @@ export default {
   setup() {
     const axiosInstance = inject('$axios')
     const movieStore = useMoviesStore()
-    const freeToWatch = ref([])
     const defaultType = ref('movie')
-    const loading = ref(false)
 
     const switchDefaultTime = () => {
       if (defaultType.value == 'movie') {
@@ -67,36 +65,25 @@ export default {
       }
     }
 
-    const getFreeToWatch = async () => {
-      loading.value = true
-      const response = await axiosInstance.get(
-        `discover/${defaultType.value}?sort_by=popularity.desc&watch_region=US&page=1&with_watch_monetization_types=free`
-      )
-      try {
-        setTimeout(() => {
-          freeToWatch.value = response.data.results
-          loading.value = false
-        }, 1000)
-      } catch (error) {
-        console.log(error)
-      }
-    }
+    const { data, fetchData, url } = useGetApi(
+      `discover/${defaultType.value}?sort_by=popularity.desc&watch_region=US&page=1&with_watch_monetization_types=free`
+    )
 
     onMounted(async () => {
-      getFreeToWatch()
+      fetchData()
       await movieStore.getmovieGenres(axiosInstance)
       await movieStore.getTvGenres(axiosInstance)
     })
 
     watch(defaultType, () => {
-      getFreeToWatch()
+      url.value = `discover/${defaultType.value}?sort_by=popularity.desc&watch_region=US&page=1&with_watch_monetization_types=free`
+      fetchData()
     })
 
     return {
       defaultType,
       switchDefaultTime,
-      freeToWatch,
-      loading
+      data
     }
   }
 }
