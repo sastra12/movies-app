@@ -8,10 +8,6 @@
         <h1 class="mt-3 sm:mt-0 font-poppins text-lg font-semibold text-secondary">
           {{ detailTv.original_name }}
         </h1>
-        <!-- Tagline -->
-        <h4 class="font-poppins text-base text-secondary2 font-semibold italic" v-if="hidden">
-          {{ detailTv.tagline }}
-        </h4>
         <span class="font-light">{{ getGenreNames }}</span>
 
         <!-- Overview -->

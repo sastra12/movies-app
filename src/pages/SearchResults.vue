@@ -31,7 +31,7 @@
 
 <script setup>
 import DefaultContainer from '../components/Layouts/DefaultContainer.vue'
-import SearchResultItem from '../components/Movies/SearchResultItem.vue'
+import SearchResultItem from '../components/Discover/SearchResultItem.vue'
 import { useRoute } from 'vue-router'
 import { onMounted, ref, toRef, watch } from 'vue'
 import { inject } from 'vue'

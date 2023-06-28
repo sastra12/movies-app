@@ -71,7 +71,7 @@
 <script setup>
 import DefaultContainer from '../components/Layouts/DefaultContainer.vue'
 import Accordion from '@/components/Reusable/Accordion.vue'
-import DiscoverTv from '@/components/Movies/DiscoverTv.vue'
+import DiscoverTv from '@/components/Discover/DiscoverTv.vue'
 import { useMoviesStore } from '../stores/movies'
 import { inject } from 'vue'
 import { ref, onMounted, watch, computed } from 'vue'

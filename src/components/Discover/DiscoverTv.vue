@@ -1,6 +1,6 @@
 <template>
   <div class="cursor-pointer">
-    <router-link :to="`movie/${props.item.id}`">
+    <router-link :to="`tv/${props.item.id}`">
       <img
         :src="poster_path"
         alt=""

@@ -71,10 +71,10 @@
 <script setup>
 import DefaultContainer from '../components/Layouts/DefaultContainer.vue'
 import Accordion from '@/components/Reusable/Accordion.vue'
-import DiscoverMovies from '@/components/Movies/DiscoverMovies.vue'
+import DiscoverMovies from '@/components/Discover/DiscoverMovies.vue'
 import { useMoviesStore } from '../stores/movies'
 import { inject } from 'vue'
-import { ref, onMounted, reactive, watch, computed } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 import Button from '@/components/Reusable/Button.vue'
 import { useRoute, onBeforeRouteUpdate } from 'vue-router'
 import { usePreviousAndNextPage } from '@/composable/usePreviousAndNextPage.js'
