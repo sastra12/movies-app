@@ -86,7 +86,7 @@ import { Swiper, SwiperSlide } from 'swiper/vue'
 // import required modules
 import { Pagination, FreeMode, Autoplay } from 'swiper'
 import DefaultContainer from '@/components/Layouts/DefaultContainer.vue'
-import CastItem from '@/components/Movies/CastItem.vue'
+import CastItem from '@/components/Discover/CastItem.vue'
 import { computed, inject, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 

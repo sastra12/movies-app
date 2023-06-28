@@ -22,7 +22,7 @@
 
         <!-- Status -->
         <div>
-          <div class="mt-5 flex flex-col sm:flex-row sm:gap-x-4 border-b pb-4">
+          <div class="mt-5 flex flex-col lg:flex-row lg:gap-x-4 border-b pb-4">
             <p class="font-poppins text-base">
               Status : <span class="font-poppins opacity-80">{{ detailMovie.status }}</span>
             </p>
@@ -90,7 +90,7 @@ import { Swiper, SwiperSlide } from 'swiper/vue'
 // import required modules
 import { Pagination, FreeMode, Autoplay } from 'swiper'
 import DefaultContainer from '@/components/Layouts/DefaultContainer.vue'
-import CastItem from '@/components/Movies/CastItem.vue'
+import CastItem from '@/components/Discover/CastItem.vue'
 import { computed, inject, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
