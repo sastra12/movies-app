@@ -1,8 +1,8 @@
-import { reactive } from 'vue'
-import { inject } from 'vue'
+import { reactive, inject, ref } from 'vue'
 
-export function useGetApi(url) {
+export function useGetApi(initialUrl) {
   const axiosInstance = inject('$axios')
+  const url = ref(initialUrl)
 
   const data = reactive({
     loading: true,
@@ -13,7 +13,7 @@ export function useGetApi(url) {
   const fetchData = async () => {
     data.loading = true
 
-    const response = await axiosInstance.get(url)
+    const response = await axiosInstance.get(url.value)
     try {
       setTimeout(() => {
         data.response = response.data.results
@@ -26,6 +26,7 @@ export function useGetApi(url) {
 
   return {
     data,
-    fetchData
+    fetchData,
+    url
   }
 }

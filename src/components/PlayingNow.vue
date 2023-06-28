@@ -55,7 +55,7 @@ import { Pagination, FreeMode, Autoplay } from 'swiper'
 import 'swiper/css'
 
 import 'swiper/css/pagination'
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, computed } from 'vue'
 
 import NowPlayingItem from './Home/NowPlayingItem.vue'
 import DefaultContainer from './Layouts/DefaultContainer.vue'

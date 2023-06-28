@@ -18,7 +18,7 @@
       </div>
     </div>
     <div
-      v-if="loading"
+      v-if="data.loading"
       class="grid grid-cols-2 min-[455px]:grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-4 pt-2 sm:pt-3"
     >
       <skeleton-loading v-for="n in 6" :key="n" />
@@ -55,7 +55,7 @@
         }
       }"
     >
-      <Swiper-Slide v-for="item in trendingAll" :key="item.id" class="pt-2 sm:pt-3">
+      <Swiper-Slide v-for="item in data.response" :key="item.id" class="pt-2 sm:pt-3">
         <TrendingAllItem :item="item" />
       </Swiper-Slide>
     </Swiper>
@@ -71,13 +71,13 @@ import { Pagination, FreeMode, Autoplay } from 'swiper'
 import 'swiper/css'
 
 import 'swiper/css/pagination'
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref, watch, inject, computed } from 'vue'
 
 import TrendingAllItem from './Home/TrendingAllItem.vue'
 import DefaultContainer from './Layouts/DefaultContainer.vue'
-import { inject } from 'vue'
 import Button from '@/components/Reusable/Button.vue'
 import SkeletonLoading from '@/components/Home/SkeletonLoading.vue'
+import { useGetApi } from '@/composable/useGetApi'
 
 export default {
   components: {
@@ -89,10 +89,7 @@ export default {
     SkeletonLoading
   },
   setup() {
-    const axiosInstance = inject('$axios')
-    const trendingAll = ref([])
     const defaultTime = ref('day')
-    const loading = ref(true)
 
     const switchDefaultTime = () => {
       if (defaultTime.value == 'day') {
@@ -102,33 +99,22 @@ export default {
       }
     }
 
-    const getTrendingMovies = async () => {
-      loading.value = true
-      const response = await axiosInstance.get(`trending/all/${defaultTime.value}`)
-      try {
-        setTimeout(() => {
-          trendingAll.value = response.data.results
-          loading.value = false
-        }, 1000)
-      } catch (error) {
-        console.log(error)
-      }
-    }
+    const { data, fetchData, url } = useGetApi(`trending/all/${defaultTime.value}`)
 
     onMounted(() => {
-      getTrendingMovies()
+      fetchData()
     })
 
-    watch(defaultTime, () => {
-      getTrendingMovies()
+    watch(defaultTime, (newValue) => {
+      url.value = `trending/all/${newValue}`
+      fetchData()
     })
 
     return {
       modules: [Pagination, FreeMode, Autoplay],
       defaultTime,
-      trendingAll,
       switchDefaultTime,
-      loading
+      data
     }
   }
 }
