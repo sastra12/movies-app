@@ -86,17 +86,10 @@ const movies = ref([])
 const sort_by = ref('popularity.desc')
 const with_genres = ref([])
 const route = useRoute()
-const totalPages = ref(500)
+const totalPages = ref()
 const pageNumber = ref(Number.parseInt(route.query.page) || 1)
 const routeName = 'Movies'
 const loading = ref(false)
-
-const { previousPage, nextPage, lastPage, firstPage } = usePreviousAndNextPage(
-  pageNumber,
-  totalPages,
-  undefined,
-  routeName
-)
 
 onMounted(async () => {
   getDataMovies()
@@ -119,6 +112,7 @@ const getDataMovies = async () => {
   try {
     setTimeout(() => {
       movies.value = response.data.results
+      totalPages.value = response.data.total_pages
       loading.value = false
     }, 800)
   } catch (error) {
@@ -169,4 +163,19 @@ const selectGenres = (genreId) => {
     pageNumber.value = 1
   }
 }
+
+watch(totalPages, (newX) => {
+  if (newX <= 500) {
+    totalPages.value = newX
+  } else if (newX > 500) {
+    totalPages.value = 500
+  }
+})
+
+const { previousPage, nextPage, lastPage, firstPage } = usePreviousAndNextPage(
+  pageNumber,
+  totalPages,
+  undefined,
+  routeName
+)
 </script>

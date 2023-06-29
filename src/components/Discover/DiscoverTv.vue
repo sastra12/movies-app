@@ -6,14 +6,8 @@
         alt=""
         class="rounded-md h-64 w-44 sm:h-full min-[455px]:w-full bg-cover"
       />
-      <h1
-        v-if="props.item.hasOwnProperty('title')"
-        class="mt-3 font-poppins text-sm font-semibold text-secondary"
-      >
-        {{ props.item.title }}
-      </h1>
-      <h1 v-else class="mt-3 font-poppins text-sm font-semibold text-secondary">
-        {{ props.item.original_name }}
+      <h1 class="mt-3 font-poppins text-sm font-semibold text-secondary">
+        {{ props.item.name }}
       </h1>
       <span class="text-sm">{{ genreTypeName(props.item.genre_ids) }}</span>
       <div class="flex items-center justify-between">
