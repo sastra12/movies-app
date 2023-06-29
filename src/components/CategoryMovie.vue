@@ -8,13 +8,13 @@
         v-for="item in movieStore.movieGenres"
         :key="item.id"
         :text="item.name"
-        :type="item.id == defaultCategory.id ? 'primary' : 'secondary'"
+        :type="item.id == defaultCategory ? 'primary' : 'secondary'"
         rounded="rounded-full"
-        @event="getMovieByCategory(item.id)"
+        @event="selectMovieByCategory(item.id)"
       />
     </div>
     <div
-      v-if="loading"
+      v-if="data.loading"
       class="grid grid-cols-2 min-[455px]:grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-4 pt-2 sm:pt-3"
     >
       <skeleton-loading v-for="n in 6" :key="n" />
@@ -51,7 +51,7 @@
         }
       }"
     >
-      <Swiper-Slide v-for="item in movieByCategory" :key="item" class="pt-2 sm:pt-3">
+      <Swiper-Slide v-for="item in data.response" :key="item" class="pt-2 sm:pt-3">
         <category-item :item="item" />
       </Swiper-Slide>
     </Swiper>
@@ -60,15 +60,16 @@
 
 <script>
 import { useMoviesStore } from '@/stores/movies.js'
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, ref, inject, watch } from 'vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 // import required modules
 import { Pagination, FreeMode, Autoplay } from 'swiper'
 import CategoryItem from '@/components/Home/CategoryItem.vue'
 import DefaultContainer from '@/components/Layouts/DefaultContainer.vue'
-import { inject } from 'vue'
+
 import Button from '@/components/Reusable/Button.vue'
 import SkeletonLoading from '@/components/Home/SkeletonLoading.vue'
+import { useGetApi } from '@/composable/useGetApi'
 
 // Import Swiper styles
 import 'swiper/css'
@@ -85,47 +86,31 @@ export default {
     SkeletonLoading
   },
   setup() {
-    const axiosInstance = inject('$axios')
-    const defaultCategory = reactive({
-      id: null
-    })
-    const movieByCategory = ref([])
-    const loading = ref(true)
-
+    const defaultCategory = ref(28)
     const movieStore = useMoviesStore()
+    const { data, fetchData, url } = useGetApi(
+      `discover/movie?with_genres=${defaultCategory.value}&page=1`
+    )
 
-    const getMovieByCategory = async (id) => {
-      defaultCategory.id = id == null ? 28 : id
-      const response = await axiosInstance.get(
-        `discover/movie?with_genres=${defaultCategory.id}&page=1`
-      )
-      loading.value = true
-      try {
-        setTimeout(() => {
-          movieByCategory.value = response.data.results
-          loading.value = false
-        }, 1000)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-
-    const poster_path = (path) => {
-      return 'https://image.tmdb.org/t/p/w500/' + path
+    const selectMovieByCategory = (id) => {
+      defaultCategory.value = id
     }
 
     onMounted(() => {
-      getMovieByCategory()
+      fetchData()
+    })
+
+    watch(defaultCategory, () => {
+      url.value = `discover/movie?with_genres=${defaultCategory.value}&page=1`
+      fetchData()
     })
 
     return {
-      poster_path,
       modules: [Pagination, FreeMode, Autoplay],
       movieStore,
-      movieByCategory,
       defaultCategory,
-      getMovieByCategory,
-      loading
+      selectMovieByCategory,
+      data
     }
   }
 }
