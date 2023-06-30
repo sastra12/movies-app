@@ -36,7 +36,7 @@
           </div>
           <div class="border-b pb-4 my-4">
             <p class="font-poppins text-base">
-              Director : <span class="font-poppins opacity-80">Louis Leterrier</span>
+              Director : <span class="font-poppins opacity-80">{{ getDirector }}</span>
             </p>
           </div>
           <div class="border-b pb-4">
@@ -91,7 +91,7 @@ import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Pagination, FreeMode, Autoplay } from 'swiper'
 import DefaultContainer from '@/components/Layouts/DefaultContainer.vue'
 import CastItem from '@/components/Discover/CastItem.vue'
-import { computed, inject, onMounted, ref } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useGetApi } from '@/composable/useGetApi'
 
@@ -128,6 +128,18 @@ export default {
       }
     })
 
+    const getDirector = computed(() => {
+      const director = data.crew.filter(function (item) {
+        return item.job === 'Director'
+      })
+
+      const name = director.map(function (item) {
+        return item.name
+      })
+
+      return name[0]
+    })
+
     const poster_path = computed(() => {
       if (data.response) {
         if (data.response.poster_path) {
@@ -150,6 +162,7 @@ export default {
       convertRuntime,
       modules: [Pagination, FreeMode, Autoplay],
       hidden,
+      getDirector,
       data
     }
   }

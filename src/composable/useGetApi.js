@@ -9,7 +9,8 @@ export function useGetApi(initialUrl) {
     response: [],
     totalPages: null,
     // cast for data by id
-    casts: []
+    casts: [],
+    crew: []
   })
 
   // get data
@@ -35,6 +36,7 @@ export function useGetApi(initialUrl) {
     try {
       data.response = response.data
       data.casts = response.data.credits.cast
+      data.crew = response.data.credits.crew
       data.loading = false
     } catch (error) {
       console.log(error)
