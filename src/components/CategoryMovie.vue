@@ -60,7 +60,7 @@
 
 <script>
 import { useMoviesStore } from '@/stores/movies.js'
-import { onMounted, ref, inject, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 // import required modules
 import { Pagination, FreeMode, Autoplay } from 'swiper'

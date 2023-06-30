@@ -6,29 +6,29 @@
       </div>
       <div class="sm:w-3/5 lg:w-9/12 pl-3">
         <h1 class="mt-3 sm:mt-0 font-poppins text-lg font-semibold text-secondary">
-          {{ detailMovie.title }}
+          {{ data.response.title }}
         </h1>
         <!-- Tagline -->
         <h4 class="font-poppins text-base text-secondary2 font-semibold italic" v-if="hidden">
-          {{ detailMovie.tagline }}
+          {{ data.response.tagline }}
         </h4>
         <span class="font-light">{{ getGenreNames }}</span>
 
         <!-- Overview -->
         <h3 class="font-poppins mt-2 font-semibold text-lg">Overview</h3>
         <p class="font-poppins text-sm text-justify">
-          {{ detailMovie.overview }}
+          {{ data.response.overview }}
         </p>
 
         <!-- Status -->
         <div>
           <div class="mt-5 flex flex-col lg:flex-row lg:gap-x-4 border-b pb-4">
             <p class="font-poppins text-base">
-              Status : <span class="font-poppins opacity-80">{{ detailMovie.status }}</span>
+              Status : <span class="font-poppins opacity-80">{{ data.response.status }}</span>
             </p>
             <p class="font-poppins text-base">
               Release Date :
-              <span class="font-poppins opacity-80">{{ detailMovie.release_date }}</span>
+              <span class="font-poppins opacity-80">{{ data.response.release_date }}</span>
             </p>
             <p class="font-poppins text-base">
               Runtime : <span class="font-poppins opacity-80">{{ convertRuntime }}</span>
@@ -42,7 +42,7 @@
           <div class="border-b pb-4">
             <p class="font-poppins text-base">
               Budget :
-              <span class="font-poppins opacity-80">{{ detailMovie.budget }}</span>
+              <span class="font-poppins opacity-80">{{ data.response.budget }}</span>
             </p>
           </div>
         </div>
@@ -77,7 +77,7 @@
           }
         }"
       >
-        <Swiper-Slide v-for="item in casts" :key="item" class="pt-2 sm:pt-3">
+        <Swiper-Slide v-for="item in data.casts" :key="item" class="pt-2 sm:pt-3">
           <cast-item :item="item" />
         </Swiper-Slide>
       </Swiper>
@@ -93,6 +93,7 @@ import DefaultContainer from '@/components/Layouts/DefaultContainer.vue'
 import CastItem from '@/components/Discover/CastItem.vue'
 import { computed, inject, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import { useGetApi } from '@/composable/useGetApi'
 
 export default {
   components: {
@@ -102,47 +103,35 @@ export default {
     CastItem
   },
   setup() {
-    const axiosInstance = inject('$axios')
     const route = useRoute()
-    const detailMovie = ref([])
-    const casts = ref([])
-
-    const getDetailMovie = async () => {
-      try {
-        const response = await axiosInstance(
-          `movie/` + route.params.id + `?language=en-US&append_to_response=credits`
-        )
-        detailMovie.value = response.data
-        casts.value = response.data.credits.cast
-      } catch (error) {
-        console.log(error)
-      }
-    }
+    const { data, fetchDataById } = useGetApi(
+      `movie/` + route.params.id + `?language=en-US&append_to_response=credits`
+    )
 
     const hidden = computed(() => {
-      if (detailMovie.tagline == '') {
+      if (data.response.tagline == '') {
         return false
       }
       return true
     })
 
     const convertRuntime = computed(() => {
-      const hours = Math.floor(detailMovie.value.runtime / 60)
-      const minutes = detailMovie.value.runtime % 60
+      const hours = Math.floor(data.response.runtime / 60)
+      const minutes = data.response.runtime % 60
       return `${hours}h ${minutes}m`
     })
 
     const getGenreNames = computed(() => {
-      const genres = detailMovie.value.genres
+      const genres = data.response.genres
       if (Array.isArray(genres)) {
         return genres.map((genre) => genre.name).join(',')
       }
     })
 
     const poster_path = computed(() => {
-      if (detailMovie.value) {
-        if (detailMovie.value.poster_path) {
-          return 'https://image.tmdb.org/t/p/w500/' + detailMovie.value.poster_path
+      if (data.response) {
+        if (data.response.poster_path) {
+          return 'https://image.tmdb.org/t/p/w500/' + data.response.poster_path
         } else {
           return 'https://via.placeholder.com/300x450'
         }
@@ -151,18 +140,17 @@ export default {
       }
     })
 
-    onMounted(async () => {
-      getDetailMovie()
+    onMounted(() => {
+      fetchDataById()
     })
 
     return {
       poster_path,
       getGenreNames,
-      casts,
       convertRuntime,
       modules: [Pagination, FreeMode, Autoplay],
       hidden,
-      detailMovie
+      data
     }
   }
 }

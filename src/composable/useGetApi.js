@@ -6,11 +6,13 @@ export function useGetApi(initialUrl) {
 
   const data = reactive({
     loading: true,
-    error: null,
     response: [],
-    totalPages: null
+    totalPages: null,
+    // cast for data by id
+    casts: []
   })
 
+  // get data
   const fetchData = async () => {
     data.loading = true
 
@@ -21,6 +23,19 @@ export function useGetApi(initialUrl) {
         data.totalPages = response.data.total_pages
         data.loading = false
       }, 1000)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  // get data by id
+  const fetchDataById = async () => {
+    data.loading = true
+    const response = await axiosInstance.get(url.value)
+    try {
+      data.response = response.data
+      data.casts = response.data.credits.cast
+      data.loading = false
     } catch (error) {
       console.log(error)
     }
@@ -37,6 +52,7 @@ export function useGetApi(initialUrl) {
   return {
     data,
     fetchData,
+    fetchDataById,
     url,
     totalPages: finalTotalPages
   }
