@@ -43,12 +43,11 @@ import { useGetApi } from '@/composable/useGetApi'
 
 const route = useRoute()
 const axiosInstance = inject('$axios')
-const searchResults = ref([])
 const searchQuery = ref(route.query.query)
 const pageNumber = ref(Number(route.query.page))
-const loading = ref(false)
 const movieStore = useMoviesStore()
 const routeName = 'SearchResult'
+// composable
 const { data, fetchData, url, totalPages } = useGetApi(
   `search/multi?query=${searchQuery.value}&page=${pageNumber.value}`
 )

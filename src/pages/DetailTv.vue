@@ -131,8 +131,12 @@ export default {
 
     const poster_path = computed(() => {
       if (detailTv.value) {
-        return 'https://image.tmdb.org/t/p/w500/' + detailTv.value.poster_path
-      } else if (detailTv.value.poster_path == null) {
+        if (detailTv.value.poster_path) {
+          return 'https://image.tmdb.org/t/p/w500/' + detailTv.value.poster_path
+        } else {
+          return 'https://via.placeholder.com/300x450'
+        }
+      } else {
         return 'https://via.placeholder.com/300x450'
       }
     })
