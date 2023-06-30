@@ -33,7 +33,7 @@
 import DefaultContainer from '../components/Layouts/DefaultContainer.vue'
 import SearchResultItem from '../components/Discover/SearchResultItem.vue'
 import { useRoute } from 'vue-router'
-import { onMounted, ref, toRef, watch } from 'vue'
+import { onMounted, ref, toRef, watch, computed, watchEffect } from 'vue'
 import { inject } from 'vue'
 import SkeletonLoading from '../components/Home/SkeletonLoading.vue'
 import { useMoviesStore } from '../stores/movies'
@@ -44,13 +44,16 @@ const route = useRoute()
 const axiosInstance = inject('$axios')
 const searchResults = ref([])
 const searchQuery = ref(route.query.query)
-const search = toRef(searchQuery.value)
 const pageNumber = ref(Number(route.query.page))
-const page = toRef(pageNumber)
 const totalPages = ref()
 const loading = ref(false)
 const movieStore = useMoviesStore()
 const routeName = 'SearchResult'
+
+// watchEffect(() => {
+//   searchQuery.value = route.query.query
+//   pageNumber.value = route.query.page
+// })
 
 const { previousPage, nextPage, lastPage, firstPage } = usePreviousAndNextPage(
   pageNumber,
@@ -91,7 +94,13 @@ watch(pageNumber, () => {
   }, 1000)
 })
 
-watch([search, page], () => {
-  getSearchQuery()
+// ketika searchQuery dan page berubah
+watch([() => route.query.query, () => route.query.page], ([query, page]) => {
+  searchQuery.value = query
+  pageNumber.value = page
+  if (searchQuery.value !== undefined && pageNumber.value !== undefined) {
+    getSearchQuery()
+  }
+  return false
 })
 </script>
