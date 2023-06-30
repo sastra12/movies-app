@@ -4,7 +4,7 @@
       Search result for <span class="text-secondary2">"{{ searchQuery }}"</span>
     </h1>
     <div
-      v-if="loading"
+      v-if="data.loading"
       class="grid grid-cols-2 min-[455px]:grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-4 pt-2 sm:pt-3"
     >
       <skeleton-loading v-for="n in 20" :key="n" />
@@ -13,7 +13,7 @@
       v-else
       class="grid grid-cols-2 min-[455px]:grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-4"
     >
-      <div class="pt-2 sm:pt-3" v-for="item in searchResults" :key="item.id">
+      <div class="pt-2 sm:pt-3" v-for="item in data.response" :key="item.id">
         <SearchResultItem :item="item" />
       </div>
     </div>
@@ -39,21 +39,19 @@ import SkeletonLoading from '../components/Home/SkeletonLoading.vue'
 import { useMoviesStore } from '../stores/movies'
 import Button from '@/components/Reusable/Button.vue'
 import { usePreviousAndNextPage } from '@/composable/usePreviousAndNextPage.js'
+import { useGetApi } from '@/composable/useGetApi'
 
 const route = useRoute()
 const axiosInstance = inject('$axios')
 const searchResults = ref([])
 const searchQuery = ref(route.query.query)
 const pageNumber = ref(Number(route.query.page))
-const totalPages = ref()
 const loading = ref(false)
 const movieStore = useMoviesStore()
 const routeName = 'SearchResult'
-
-// watchEffect(() => {
-//   searchQuery.value = route.query.query
-//   pageNumber.value = route.query.page
-// })
+const { data, fetchData, url, totalPages } = useGetApi(
+  `search/multi?query=${searchQuery.value}&page=${pageNumber.value}`
+)
 
 const { previousPage, nextPage, lastPage, firstPage } = usePreviousAndNextPage(
   pageNumber,
@@ -63,26 +61,10 @@ const { previousPage, nextPage, lastPage, firstPage } = usePreviousAndNextPage(
 )
 
 onMounted(async () => {
-  getSearchQuery()
+  fetchData()
   await movieStore.getmovieGenres(axiosInstance)
   await movieStore.getTvGenres(axiosInstance)
 })
-
-const getSearchQuery = async () => {
-  loading.value = true
-  const response = await axiosInstance.get(
-    `search/multi?query=${searchQuery.value}&page=${pageNumber.value}`
-  )
-  try {
-    setTimeout(() => {
-      searchResults.value = response.data.results
-      totalPages.value = response.data.total_pages
-      loading.value = false
-    }, 1000)
-  } catch (error) {
-    console.log(error)
-  }
-}
 
 watch(pageNumber, () => {
   setTimeout(() => {
@@ -98,8 +80,9 @@ watch(pageNumber, () => {
 watch([() => route.query.query, () => route.query.page], ([query, page]) => {
   searchQuery.value = query
   pageNumber.value = page
+  url.value = `search/multi?query=${searchQuery.value}&page=${pageNumber.value}`
   if (searchQuery.value !== undefined && pageNumber.value !== undefined) {
-    getSearchQuery()
+    fetchData()
   }
   return false
 })

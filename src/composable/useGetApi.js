@@ -1,4 +1,4 @@
-import { reactive, inject, ref } from 'vue'
+import { reactive, inject, computed, ref } from 'vue'
 
 export function useGetApi(initialUrl) {
   const axiosInstance = inject('$axios')
@@ -7,7 +7,8 @@ export function useGetApi(initialUrl) {
   const data = reactive({
     loading: true,
     error: null,
-    response: []
+    response: [],
+    totalPages: null
   })
 
   const fetchData = async () => {
@@ -17,6 +18,7 @@ export function useGetApi(initialUrl) {
     try {
       setTimeout(() => {
         data.response = response.data.results
+        data.totalPages = response.data.total_pages
         data.loading = false
       }, 1000)
     } catch (error) {
@@ -24,9 +26,18 @@ export function useGetApi(initialUrl) {
     }
   }
 
+  const finalTotalPages = computed(() => {
+    if (data.totalPages <= 500) {
+      return data.totalPages
+    } else if (data.totalPages > 500) {
+      return 500
+    }
+  })
+
   return {
     data,
     fetchData,
-    url
+    url,
+    totalPages: finalTotalPages
   }
 }
