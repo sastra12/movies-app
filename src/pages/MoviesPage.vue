@@ -40,7 +40,7 @@
       </div>
 
       <div
-        v-if="loading"
+        v-if="data.loading"
         class="px-2 grid grid-cols-2 min-[455px]:grid-cols-2 min-[800px]:grid-cols-3 lg:grid-cols-4 gap-2 sm:w-3/5 md:w-4/6 lg:w-3/4"
       >
         <div class="pt-2 sm:pt-3" v-for="n in 20" :key="n">
@@ -51,7 +51,7 @@
         v-else
         class="px-2 grid grid-cols-2 min-[455px]:grid-cols-2 min-[800px]:grid-cols-3 lg:grid-cols-4 gap-2 sm:w-3/5 md:w-4/6 lg:w-3/4"
       >
-        <div class="pt-2 sm:pt-3" v-for="item in movies" :key="item.id">
+        <div class="pt-2 sm:pt-3" v-for="item in data.response" :key="item.id">
           <DiscoverMovies :item="item" />
         </div>
       </div>
@@ -86,13 +86,14 @@ const movies = ref([])
 const sort_by = ref('popularity.desc')
 const with_genres = ref([])
 const route = useRoute()
-const totalPages = ref()
+// const totalPages = ref()
 const pageNumber = ref(Number.parseInt(route.query.page) || 1)
 const routeName = 'Movies'
 const loading = ref(false)
+import { useGetApi } from '@/composable/useGetApi'
 
 onMounted(async () => {
-  getDataMovies()
+  fetchData()
   await movieStore.getmovieGenres(axiosInstance)
 })
 
@@ -104,26 +105,11 @@ onBeforeRouteUpdate((to, from, next) => {
   next({ path: urlWithoutQueryParam })
 })
 
-const getDataMovies = async () => {
-  loading.value = true
-  const response = await axiosInstance.get(
-    `discover/movie?&sort_by=${sort_by.value}&with_genres=${convertWithGenresToString.value}&page=${pageNumber.value}`
-  )
-  try {
-    setTimeout(() => {
-      movies.value = response.data.results
-      totalPages.value = response.data.total_pages
-      loading.value = false
-    }, 800)
-  } catch (error) {
-    console.log(error)
-  }
-}
-
 watch(
   [sort_by, with_genres, pageNumber],
   () => {
-    getDataMovies()
+    url.value = `discover/movie?&sort_by=${sort_by.value}&with_genres=${convertWithGenresToString.value}&page=${pageNumber.value}`
+    fetchData()
   },
   { deep: true }
 )
@@ -164,13 +150,10 @@ const selectGenres = (genreId) => {
   }
 }
 
-watch(totalPages, (newX) => {
-  if (newX <= 500) {
-    totalPages.value = newX
-  } else if (newX > 500) {
-    totalPages.value = 500
-  }
-})
+// composable
+const { data, fetchData, url, totalPages } = useGetApi(
+  `discover/movie?&sort_by=${sort_by.value}&with_genres=${convertWithGenresToString.value}&page=${pageNumber.value}`
+)
 
 const { previousPage, nextPage, lastPage, firstPage } = usePreviousAndNextPage(
   pageNumber,
