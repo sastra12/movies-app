@@ -82,14 +82,11 @@ import SkeletonLoading from '../components/Home/SkeletonLoading.vue'
 
 const movieStore = useMoviesStore()
 const axiosInstance = inject('$axios')
-const movies = ref([])
 const sort_by = ref('popularity.desc')
 const with_genres = ref([])
 const route = useRoute()
-// const totalPages = ref()
 const pageNumber = ref(Number.parseInt(route.query.page) || 1)
 const routeName = 'Movies'
-const loading = ref(false)
 import { useGetApi } from '@/composable/useGetApi'
 
 onMounted(async () => {
