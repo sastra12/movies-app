@@ -4,7 +4,7 @@
       class="py-3 px-6 min-[800px]:px-0 min-[800px]:w-4/5 min-[800px]:mx-auto min-[800px]:flex min-[800px]:items-center min-[800px]:justify-between container mx-auto flex justify-between"
     >
       <router-link to="/">
-        <h1 class="text-secondary text-xl min-[800px]:text-2xl font-bold">
+        <h1 class="text-secondary text-xl min-[800px]:text-2xl font-bold font-poppins">
           Movie<span class="text-secondary2">App</span>
         </h1>
       </router-link>
@@ -36,9 +36,12 @@
           v-model="search"
           placeholder="Search..."
           type="text"
-          class="text-slate-400 mt-3 min-[800px]:mt-0 border-2 border-secondary rounded-sm py-1.5 min-[800px]:py-0 px-2 focus:outline-none focus:ring focus:ring-teal-500 bg-white"
+          class="text-slate-400 font-poppins mt-3 min-[800px]:mt-0 border-2 border-secondary rounded-sm py-1.5 min-[800px]:py-0 px-2 focus:outline-none focus:ring focus:ring-teal-500 bg-white"
         />
-        <button @click="searchValue" class="bg-secondary px-2 py-1.5 rounded-sm ml-2 text-white">
+        <button
+          @click="searchValue"
+          class="bg-secondary px-2 py-1.5 rounded-sm ml-2 text-white font-poppins"
+        >
           Search
         </button>
 
@@ -47,9 +50,13 @@
           v-for="nav in links"
           :key="nav"
         >
-          <router-link :to="nav.link" :class="[activeLink == nav.link ? 'text-secondary' : '']">{{
-            nav.name
-          }}</router-link>
+          <router-link
+            :to="nav.link"
+            class="font-poppins"
+            :class="[activeLink == nav.link ? 'text-secondary' : '']"
+          >
+            {{ nav.name }}
+          </router-link>
         </li>
       </ul>
     </div>

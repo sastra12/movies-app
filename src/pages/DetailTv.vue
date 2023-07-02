@@ -8,7 +8,7 @@
         <h1 class="mt-3 sm:mt-0 font-poppins text-lg font-semibold text-secondary">
           {{ data.response.original_name }}
         </h1>
-        <span class="font-light">{{ getGenreNames }}</span>
+        <span class="font-light font-poppins text-sm">{{ getGenreNames }}</span>
 
         <!-- Overview -->
         <h3 class="font-poppins mt-2 font-semibold text-lg">Overview</h3>
@@ -114,7 +114,7 @@ export default {
     const getGenreNames = computed(() => {
       const genres = data.response.genres
       if (Array.isArray(genres)) {
-        return genres.map((genre) => genre.name).join(',')
+        return genres.map((genre) => genre.name).join(', ')
       }
     })
 

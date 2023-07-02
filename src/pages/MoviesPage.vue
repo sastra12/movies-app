@@ -8,9 +8,9 @@
       <div class="sm:w-2/5 md:w-2/6 lg:w-1/4">
         <accordion header="Sort">
           <div class="px-2 py-3 rounded-md">
-            <span class="text-sm sm:text-base font-semibold">Sort Results By</span>
+            <span class="text-sm sm:text-base font-semibold font-poppins">Sort Results By</span>
             <div
-              class="py-2 text-sm sm:text-base hover:bg-secondary hover:text-white px-2 cursor-pointer rounded-sm my-2"
+              class="py-2 text-sm sm:text-base hover:bg-secondary hover:text-white px-2 cursor-pointer rounded-sm my-2 font-poppins"
               :class="[item.value == sort_by ? 'bg-secondary text-white' : '']"
               v-for="item in movieStore.sort_by"
               :key="item"
@@ -23,10 +23,10 @@
 
         <accordion header="Filters">
           <div class="px-2 py-3 rounded-md">
-            <span class="text-sm sm:text-base font-semibold">Select By Genre</span>
+            <span class="text-sm sm:text-base font-semibold font-poppins">Select By Genre</span>
             <div class="mt-2 max-h-32 sm:max-h-56 overflow-y-auto">
               <div
-                class="py-1 mb-2 text-sm sm:text-base px-2 cursor-pointer rounded-sm hover:bg-secondary hover:text-white"
+                class="py-1 mb-2 text-sm sm:text-base px-2 cursor-pointer rounded-sm hover:bg-secondary hover:text-white font-poppins"
                 :class="[activeGenres.includes(item.id) ? 'bg-secondary text-white' : '']"
                 v-for="item in movieStore.movieGenres"
                 :key="item.id"

@@ -29,7 +29,7 @@ const buttonClass = computed(() => {
 
 <style scoped>
 button {
-  @apply px-3 min-w-max py-1 text-xs;
+  @apply px-3 min-w-max py-1 text-xs font-poppins;
 }
 .primary {
   @apply bg-secondary text-white;

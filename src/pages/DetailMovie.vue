@@ -12,7 +12,7 @@
         <h4 class="font-poppins text-base text-secondary2 font-semibold italic" v-if="hidden">
           {{ data.response.tagline }}
         </h4>
-        <span class="font-light">{{ getGenreNames }}</span>
+        <span class="font-light font-poppins text-sm">{{ getGenreNames }}</span>
 
         <!-- Overview -->
         <h3 class="font-poppins mt-2 font-semibold text-lg">Overview</h3>
@@ -124,7 +124,7 @@ export default {
     const getGenreNames = computed(() => {
       const genres = data.response.genres
       if (Array.isArray(genres)) {
-        return genres.map((genre) => genre.name).join(',')
+        return genres.map((genre) => genre.name).join(', ')
       }
     })
 
