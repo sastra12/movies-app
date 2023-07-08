@@ -36,17 +36,17 @@
           v-model="search"
           placeholder="Search..."
           type="text"
-          class="w-1/2 min-[500px]:w-auto text-slate-400 font-poppins mt-3 min-[800px]:mt-0 border-2 border-secondary rounded-sm py-1.5 min-[800px]:py-0 px-2 focus:outline-none focus:ring focus:ring-teal-500 bg-white"
+          class="w-1/2 min-[500px]:w-auto text-slate-400 font-poppins text-base mt-3 min-[800px]:mt-0 border-2 border-secondary rounded-sm py-1.5 px-1 min-[800px]:hidden focus:outline-none focus:ring focus:ring-teal-500 bg-white"
         />
         <button
           @click="searchValue"
-          class="bg-secondary px-2 py-1.5 rounded-sm ml-2 text-white font-poppins"
+          class="bg-secondary px-2 py-1.5 rounded-sm ml-2 text-white font-poppins min-[800px]:hidden"
         >
           Search
         </button>
 
         <li
-          class="py-3 text-base min-[800px]:my-auto hover:text-secondary min-[800px]:py-0 min-[800px]:ml-4 min-[800px]:text-lg min-[800px]:text-white"
+          class="py-3 text-base min-[800px]:my-auto hover:text-secondary min-[800px]:py-0 min-[800px]:mr-4 min-[800px]:text-lg min-[800px]:text-white"
           v-for="nav in links"
           :key="nav"
         >
@@ -58,23 +58,51 @@
             {{ nav.name }}
           </router-link>
         </li>
+
+        <li class="flex items-center">
+          <div @click="toggleModal">
+            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
+              <!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+              <path
+                fill="white"
+                d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"
+              />
+            </svg>
+          </div>
+        </li>
       </ul>
     </div>
+    <BaseModel :modalActive="modalActive" @close-modal="toggleModal">
+      <div class="text-black">
+        <h1 class="text-xl mb-1 font-poppins text-secondary">Search Movie or Tv Show</h1>
+        <input
+          @keyup.enter="searchValue"
+          v-model="search"
+          type="text"
+          class="w-full text-slate-400 font-poppins mt-3 border-2 text-base border-secondary rounded-sm py-1.5 px-1 focus:outline-none focus:ring focus:ring-teal-500 bg-white"
+        /></div
+    ></BaseModel>
   </nav>
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import BaseModel from '@/components/Reusable/BaseModel.vue'
 
 const route = useRoute()
 const openMenu = ref(false)
+const state = ref(0)
 const router = useRouter()
 const search = ref('')
 const links = ref([
   { link: '/movies', name: 'Movies' },
   { link: '/tv', name: 'Tv Show' }
 ])
+const modalActive = ref(false)
+const toggleModal = () => {
+  modalActive.value = !modalActive.value
+}
 
 const changeMenu = () => {
   openMenu.value = !openMenu.value
@@ -82,6 +110,10 @@ const changeMenu = () => {
 
 const activeLink = computed(() => {
   return route.fullPath
+})
+
+watch(state, (newState) => {
+  console.log(newState)
 })
 
 const searchValue = () => {
