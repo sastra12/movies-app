@@ -80,8 +80,9 @@
           v-model="search"
           type="text"
           class="w-full text-slate-400 font-poppins mt-3 border-2 text-base border-secondary rounded-sm py-1.5 px-1 focus:outline-none focus:ring focus:ring-teal-500 bg-white"
-        /></div
-    ></BaseModel>
+        />
+      </div>
+    </BaseModel>
   </nav>
 </template>
 
