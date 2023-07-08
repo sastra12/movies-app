@@ -1,14 +1,7 @@
 <template>
   <default-container>
     <h1 class="text-lg sm:text-xl font-bold text-secondary2 font-poppins">Now Playing</h1>
-    <div
-      v-if="data.loading"
-      class="grid grid-cols-1 min-[455px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 pt-2 sm:pt-3"
-    >
-      <skeleton-loading v-for="n in 4" :key="n" />
-    </div>
     <Swiper
-      v-else
       class="p-4 mt-2"
       :modules="modules"
       :slidesPerView="1"
@@ -21,26 +14,33 @@
         disableOnInteraction: false
       }"
       :breakpoints="{
-        '@0.00': {
+        250: {
           slidesPerView: 1,
-          spaceBetween: 15
+          spaceBetween: 10
         },
-        '@0.75': {
+        320: {
           slidesPerView: 2,
-          spaceBetween: 14
+          spaceBetween: 10
         },
-        '@1.00': {
+        500: {
           slidesPerView: 3,
-          spaceBetween: 15
+          spaceBetween: 10
         },
-        '@1.50': {
+        640: {
           slidesPerView: 4,
-          spaceBetween: 25
+          spaceBetween: 10
+        },
+        1024: {
+          slidesPerView: 6,
+          spaceBetween: 10
         }
       }"
     >
-      <Swiper-Slide v-for="item in splicedResponse" :key="item" class="pt-2 sm:pt-3">
-        <NowPlayingItem :item="item" />
+      <Swiper-Slide v-for="item in data.response" :key="item" class="pt-2 sm:pt-3">
+        <div v-if="data.loading">
+          <skeleton-loading />
+        </div>
+        <NowPlayingItem v-else :item="item" />
       </Swiper-Slide>
     </Swiper>
   </default-container>
@@ -55,7 +55,7 @@ import { Pagination, FreeMode, Autoplay } from 'swiper'
 import 'swiper/css'
 
 import 'swiper/css/pagination'
-import { onMounted, computed } from 'vue'
+import { onMounted } from 'vue'
 
 import NowPlayingItem from './Home/NowPlayingItem.vue'
 import DefaultContainer from './Layouts/DefaultContainer.vue'
@@ -79,14 +79,13 @@ export default {
     const movieStore = useMoviesStore()
 
     const { data, fetchData } = useGetApi(`movie/now_playing`)
-    const splicedResponse = computed(() => data.response.slice(0, 12))
 
     onMounted(async () => {
       await fetchData()
       await movieStore.getmovieGenres(axiosInstance)
     })
 
-    return { modules: [Pagination, FreeMode, Autoplay], data, splicedResponse }
+    return { modules: [Pagination, FreeMode, Autoplay], data }
   }
 }
 </script>

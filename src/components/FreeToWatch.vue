@@ -19,18 +19,12 @@
     </div>
 
     <!-- Free To Watch -->
-    <div
-      v-if="data.loading"
-      class="grid grid-cols-2 min-[455px]:grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-4 pt-2 sm:pt-3"
-    >
-      <skeleton-loading v-for="n in 5" :key="n" />
-    </div>
-    <div
-      v-else
-      class="grid grid-cols-2 min-[455px]:grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-4"
-    >
+    <div class="grid grid-cols-2 min-[455px]:grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-4">
       <div class="pt-2 sm:pt-3" v-for="item in data.response" :key="item.id">
-        <FreeToWatchItem :item="item" :type="defaultType" />
+        <div v-if="data.loading">
+          <skeleton-loading />
+        </div>
+        <FreeToWatchItem :item="item" :type="defaultType" v-else />
       </div>
     </div>
   </default-container>

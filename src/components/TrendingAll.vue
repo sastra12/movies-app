@@ -17,14 +17,7 @@
         />
       </div>
     </div>
-    <div
-      v-if="data.loading"
-      class="grid grid-cols-2 min-[455px]:grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-4 pt-2 sm:pt-3"
-    >
-      <skeleton-loading v-for="n in 6" :key="n" />
-    </div>
     <Swiper
-      v-else
       class="p-4 mt-2 sm:mt-8"
       :modules="modules"
       :slidesPerView="1"
@@ -35,7 +28,7 @@
       :breakpoints="{
         250: {
           slidesPerView: 1,
-          spaceBetween: 15
+          spaceBetween: 10
         },
         320: {
           slidesPerView: 2,
@@ -56,7 +49,10 @@
       }"
     >
       <Swiper-Slide v-for="item in data.response" :key="item.id" class="pt-2 sm:pt-3">
-        <TrendingAllItem :item="item" />
+        <div v-if="data.loading">
+          <skeleton-loading />
+        </div>
+        <TrendingAllItem :item="item" v-else />
       </Swiper-Slide>
     </Swiper>
   </default-container>
