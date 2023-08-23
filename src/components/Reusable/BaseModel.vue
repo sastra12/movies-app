@@ -1,5 +1,6 @@
 <template>
   <div
+    @click.self="$emit('close-modal')"
     v-show="modalActive"
     class="absolute w-full bg-black bg-opacity-30 h-screen top-0 left-0 flex justify-center px-8 z-50"
   >
