@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 
 export const useMoviesStore = defineStore('movies', {
   state: () => ({
+    modalStatus: false,
     movieGenres: [],
     tvGenres: [],
     sort_by: [
@@ -42,6 +43,11 @@ export const useMoviesStore = defineStore('movies', {
   }),
 
   actions: {
+    changeModalStatus() {
+      this.modalStatus = !this.modalStatus
+      console.log(this.modalStatus)
+    },
+
     async getmovieGenres(axiosInstance) {
       const response = await axiosInstance.get(`genre/movie/list`)
       this.movieGenres = response.data.genres

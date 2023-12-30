@@ -60,7 +60,7 @@
         </li>
 
         <li class="flex items-center">
-          <div @click="toggleModal">
+          <div @click="movieStore.changeModalStatus()">
             <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
               <!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
               <path
@@ -72,7 +72,7 @@
         </li>
       </ul>
     </div>
-    <BaseModel :modalActive="modalActive" @close-modal="toggleModal">
+    <BaseModel v-if="movieStore.modalStatus">
       <div class="text-black">
         <h1 class="text-xl mb-1 font-poppins text-secondary">Search Movie or Tv Show</h1>
         <input
@@ -90,7 +90,9 @@
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import BaseModel from '@/components/Reusable/BaseModel.vue'
+import { useMoviesStore } from '@/stores/movies.js'
 
+const movieStore = useMoviesStore()
 const route = useRoute()
 const openMenu = ref(false)
 const state = ref(0)
@@ -100,10 +102,6 @@ const links = ref([
   { link: '/movies', name: 'Movies' },
   { link: '/tv', name: 'Tv Show' }
 ])
-const modalActive = ref(false)
-const toggleModal = () => {
-  modalActive.value = !modalActive.value
-}
 
 const changeMenu = () => {
   openMenu.value = !openMenu.value

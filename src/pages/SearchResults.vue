@@ -51,6 +51,8 @@ const searchQuery = ref(route.query.query)
 const pageNumber = ref(Number(route.query.page))
 const movieStore = useMoviesStore()
 const routeName = 'SearchResult'
+movieStore.modalStatus = false
+
 // composable
 const { data, fetchData, url, totalPages } = useGetApi(
   `search/multi?query=${searchQuery.value}&page=${pageNumber.value}`
@@ -81,6 +83,7 @@ watch(pageNumber, () => {
 
 // ketika searchQuery dan page berubah
 watch([() => route.query.query, () => route.query.page], ([query, page]) => {
+  movieStore.modalStatus = false
   searchQuery.value = query
   pageNumber.value = page
   url.value = `search/multi?query=${searchQuery.value}&page=${pageNumber.value}`
