@@ -72,7 +72,7 @@
         </li>
       </ul>
     </div>
-    <BaseModel v-if="movieStore.modalStatus">
+    <BaseModel>
       <div class="text-black">
         <h1 class="text-xl mb-1 font-poppins text-secondary">Search Movie or Tv Show</h1>
         <input
