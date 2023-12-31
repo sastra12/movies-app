@@ -4,7 +4,7 @@
     <h1 class="mt-3 font-poppins text-sm font-semibold text-secondary">
       {{ props.item.title }}
     </h1>
-    <span>{{ genreTypeName(props.item.genre_ids) }}</span>
+    <span class="text-sm font-normal font-poppins">{{ genreTypeName(props.item.genre_ids) }}</span>
     <div class="flex items-center justify-between">
       <span class="font-poppins text-sm font-light mt-1">{{ props.item.release_date }}</span>
       <div class="flex items-center gap-x-0.5 sm:gap-2">

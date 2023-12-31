@@ -10,7 +10,7 @@
     <h1 v-else class="mt-3 font-poppins text-sm font-semibold text-secondary">
       {{ props.item.original_name }}
     </h1>
-    <span>{{ genreTypeName(props.item.genre_ids) }}</span>
+    <span class="text-sm font-normal font-poppins">{{ genreTypeName(props.item.genre_ids) }}</span>
     <div class="flex items-center justify-between">
       <span
         v-if="props.item.hasOwnProperty('release_date')"
