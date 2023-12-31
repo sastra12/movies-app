@@ -59,7 +59,7 @@
           </router-link>
         </li>
 
-        <li class="flex items-center">
+        <li class="flex items-center cursor-pointer">
           <div @click="movieStore.changeModalStatus()">
             <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
               <!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
@@ -73,21 +73,19 @@
       </ul>
     </div>
     <BaseModel>
-      <div class="text-black">
-        <h1 class="text-xl mb-1 font-poppins text-secondary">Search Movie or Tv Show</h1>
-        <input
-          @keyup.enter="searchValue"
-          v-model="search"
-          type="text"
-          class="w-full text-slate-400 font-poppins mt-3 border-2 text-base border-secondary rounded-sm py-1.5 px-1 focus:outline-none focus:ring focus:ring-teal-500 bg-white"
-        />
-      </div>
+      <h1 class="text-xl mb-1 font-poppins text-secondary">Search Movie or Tv Show</h1>
+      <input
+        @keyup.enter="searchValue"
+        v-model="search"
+        type="text"
+        class="w-full text-slate-400 font-poppins mt-3 border-2 text-base border-secondary rounded-sm py-1.5 px-1 focus:outline-none focus:ring focus:ring-teal-500 bg-white"
+      />
     </BaseModel>
   </nav>
 </template>
 
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import BaseModel from '@/components/Reusable/BaseModel.vue'
 import { useMoviesStore } from '@/stores/movies.js'
@@ -95,7 +93,7 @@ import { useMoviesStore } from '@/stores/movies.js'
 const movieStore = useMoviesStore()
 const route = useRoute()
 const openMenu = ref(false)
-const state = ref(0)
+
 const router = useRouter()
 const search = ref('')
 const links = ref([
@@ -107,12 +105,12 @@ const changeMenu = () => {
   openMenu.value = !openMenu.value
 }
 
+const check = () => {
+  console.log('Ok')
+}
+
 const activeLink = computed(() => {
   return route.fullPath
-})
-
-watch(state, (newState) => {
-  console.log(newState)
 })
 
 const searchValue = () => {
