@@ -1,7 +1,7 @@
 <template>
   <div
     @click.self="movieStore.changeModalStatus()"
-    class="absolute w-full flex justify-center px-8 z-40"
+    class="fixed w-full flex justify-center px-8 z-40"
     :class="backDropModal"
   >
     <div v-if="movieStore.modalStatus" class="p-4 bg-white self-start mt-32 w-full sm:w-2/4">
